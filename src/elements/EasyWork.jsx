@@ -6,6 +6,7 @@ import {
   MDBTabsContent,
   MDBTabsPane
 } from 'mdb-react-ui-kit';
+import Serch from './Serch';
 
 export default function EasyWork() {
   const [fillActive, setFillActive] = useState('tab1');
@@ -39,7 +40,9 @@ export default function EasyWork() {
       </MDBTabs>
 
       <MDBTabsContent>
-        <MDBTabsPane open={fillActive === 'tab1'}>Tab 1 content</MDBTabsPane>
+        <MDBTabsPane open={fillActive === 'tab1'}>
+          <Serch></Serch>
+        </MDBTabsPane>
         <MDBTabsPane open={fillActive === 'tab2'}>Tab 2 content</MDBTabsPane>
         <MDBTabsPane open={fillActive === 'tab3'}>Tab 3 content</MDBTabsPane>
       </MDBTabsContent>
