@@ -1,0 +1,25 @@
+import React, { useState } from 'react';
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root');
+
+const App = () => {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  return (
+    <div>
+      <button onClick={() => setModalIsOpen(true)}>Открыть модальное окно</button>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        contentLabel="Пример модального окна"
+      >
+        <h2>Модальное окно</h2>
+        <p>Содержимое модального окна здесь...</p>
+        <button onClick={() => setModalIsOpen(false)}>Закрыть</button>
+      </Modal>
+    </div>
+  );
+};
+
+export default App;
