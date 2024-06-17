@@ -23,17 +23,17 @@ export default function EasyWork() {
       <MDBTabs pills fill className='mb-3'>
         <MDBTabsItem>
           <MDBTabsLink onClick={() => handleFillClick('tab1')} active={fillActive === 'tab1'}>
-            Link
+            Поиск
           </MDBTabsLink>
         </MDBTabsItem>
         <MDBTabsItem>
           <MDBTabsLink onClick={() => handleFillClick('tab2')} active={fillActive === 'tab2'}>
-            Very very very very long link
+            Чаты
           </MDBTabsLink>
         </MDBTabsItem>
         <MDBTabsItem>
           <MDBTabsLink onClick={() => handleFillClick('tab3')} active={fillActive === 'tab3'}>
-            Another link
+            Что-то еще
           </MDBTabsLink>
         </MDBTabsItem>
       </MDBTabs>
