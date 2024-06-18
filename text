@@ -56,3 +56,6 @@ CREATE TABLE tbl_message_status (
     FOREIGN KEY (message_id) REFERENCES tbl_message(message_id),
     FOREIGN KEY (user_id) REFERENCES tbl_user(user_id)
 );
+
+
+[{"2060741503192964":{"factory":"F1"}},{"2939516967620484":{"name":"2","factory":"1"}},{"6293716774588292":{"name":"12345","factory":"12345"}},{"2444579700379524":{"name":"irem","factory":"fab"}}]
