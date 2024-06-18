@@ -34,8 +34,9 @@ export default function EasyWork() {
           </MDBTabsLink>
         </MDBTabsItem>
         <MDBTabsItem>
-          <MDBTabsLink onClick={() => handleFillClick('tab3')} active={fillActive === 'tab3'}>
-            Что-то еще
+          <MDBTabsLink style={{ textTransform: 'none' }} onClick={() => handleFillClick('tab3')} active={fillActive === 'tab3'}>
+            User
+            <div >Company</div>
           </MDBTabsLink>
         </MDBTabsItem>
       </MDBTabs>

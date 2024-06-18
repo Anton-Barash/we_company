@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import PopAddNewItem from './PopAddNewItem';
 
 const Serch = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -61,6 +62,7 @@ const Serch = () => {
                 onChange={handleSearchTerm2Change}
             />
             <button onClick={handleSearch}>Искать</button>
+            <PopAddNewItem></PopAddNewItem>
             <div>
                 {searchResults.map(result => (
                     <div key={result.dialog_id}>

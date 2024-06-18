@@ -16,7 +16,7 @@ const Chat = () => {
 
 
 
-    const a = [{ "000": { name: "изделие", factory: "выберите" } }]
+    
 
     const [verticalActive, setVerticalActive] = useState(
         Object.keys(myStore.idFacNam[0])[0]
