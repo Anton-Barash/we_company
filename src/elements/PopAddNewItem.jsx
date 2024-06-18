@@ -1,88 +1,63 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
-import axios from 'axios';
-
 Modal.setAppElement('#root');
-
 const App = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [factory, setFactory] = useState('');
     const [product, setProduct] = useState('');
     const [note, setNote] = useState('');
     const [suggestions, setSuggestions] = useState(['писька', 'пиписька', 'ПИсюлька', 'ПисюНЬчик']);
+    const [factories, setFactories] = useState([
+        { id: 'factory_id_1', name: 'Фабрика 1' },
+        { id: 'factory_id_2', name: 'Фабрика 2' },
+        { id: 'factory_id_3', name: 'Фабрика 3' },
+        // Добавьте другие фабрики по аналогии
+    ]);
+    const [filteredFactories, setFilteredFactories] = useState([]);
+    const handleFactoryChange = (event) => {
+        const value = event.target.value;
+        setFactory(value);
 
-    // useEffect(() => {
-    //     // Функция для загрузки подсказок из базы данных при монтировании компонента
-    //     const fetchSuggestions = async () => {
-    //         try {
-    //             const response = await axios.get('YOUR_API_ENDPOINT_HERE');
-    //             setSuggestions(response.data);
-    //         } catch (error) {
-    //             console.error('Ошибка при загрузке подсказок:', error);
-    //         }
-    //     };
-
-    //     fetchSuggestions();
-    // }, []);
-
+        const filtered = factories.filter(f => f.name.toLowerCase().includes(value.toLowerCase()));
+        setFilteredFactories(filtered);
+    };
+    const handleButtonClick = (name) => {
+        setFactory(name);
+        const filtered = factories.filter(f => f.name.toLowerCase().includes(name.toLowerCase()));
+        setFilteredFactories(filtered);
+    };
     const openModal = () => {
         setIsOpen(true);
     };
-
     const closeModal = () => {
         setIsOpen(false);
     };
-
-    const handleFactoryChange = (e) => {
-        setFactory(e.target.value);
-    };
-
-    const handleProductChange = (e) => {
-        setProduct(e.target.value);
-    };
-
-    const handleNoteChange = (e) => {
-        setNote(e.target.value);
-    };
-
     return (
         <div>
             <button onClick={openModal}>Открыть модальное окно</button>
             <Modal
                 isOpen={isOpen}
                 onRequestClose={closeModal}
-                contentLabel="Пример модального окна"
-            >
+                contentLabel="Пример модального окна">
                 <h2>Модальное окно</h2>
-                <input
-                    type="text"
-                    placeholder="Фабрика"
-                    value={factory}
-                    onChange={handleFactoryChange}
-                    list='factory-suggestions'
-                />
-
-                <datalist id="factory-suggestions">
-                    {suggestions.map((item) => (
-                        <option value={item} key={item} />
-                    ))}
-                </datalist>
-                <input
-                    type="text"
-                    placeholder="Изделие"
-                    value={product}
-                    onChange={handleProductChange}
-                />
-                <input
-                    type="text"
-                    placeholder="Примечание"
-                    value={note}
-                    onChange={handleNoteChange}
-                />
+                <div>
+                    <input
+                        type="text"
+                        placeholder="Фабрика"
+                        value={factory}
+                        onChange={handleFactoryChange}
+                    />
+                    <div>
+                        {filteredFactories.map(f => (
+                            <button key={f.id} onClick={() => handleButtonClick(f.name)}>
+                                {f.name}
+                            </button>
+                        ))}
+                    </div>
+                </div>
                 <button onClick={closeModal}>Закрыть</button>
             </Modal>
-        </div>
-    );
+        </div>);
 };
 
 export default App;

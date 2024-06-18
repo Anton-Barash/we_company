@@ -6,12 +6,13 @@ CREATE TABLE tbl_user (
     password VARCHAR(255)
 );
 
-CREATE TABLE tbl_dialog (
-    dialog_id SERIAL PRIMARY KEY,
-    dialog_name VARCHAR(255),
-    dialog_name_2 VARCHAR(255),
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP
+CREATE TABLE public.tbl_dialog (
+	dialog_id serial4 NOT NULL,
+	factory_name varchar(255) NOT NULL,
+	created_at timestamp NULL,
+	updated_at timestamp NULL,
+	item_name_2 varchar NOT NULL,
+	CONSTRAINT tbl_dialog_pkey PRIMARY KEY (dialog_id)
 );
 
 CREATE TABLE tbl_message (
