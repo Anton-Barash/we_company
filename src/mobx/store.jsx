@@ -21,6 +21,10 @@ class MyStore {
         arr.length > 0 ? arr : [{ "000": { name: "изделие", factory: "выберите" } }]
     );
 
+    setIdFacNam(newIdFacNam) {
+        this.idFacNam.replace(newIdFacNam);
+      }
+
 }
 
 

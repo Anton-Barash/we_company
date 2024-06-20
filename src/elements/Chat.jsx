@@ -16,7 +16,7 @@ const Chat = () => {
 
 
 
-    
+
 
     const [verticalActive, setVerticalActive] = useState(
         Object.keys(myStore.idFacNam[0])[0]
@@ -50,8 +50,8 @@ const Chat = () => {
 
     return (
         <>
-            <MDBRow>
-                <MDBCol size='3'>
+            <MDBRow style={{ height: '100%', overflow: 'hidden' }}>
+                <MDBCol style={{ overflow: 'auto', height: '100%', overflowX: 'hidden', paddingBottom: "5rem" }} size='3'>
                     <MDBTabs pills className='flex-column text-center'>
                         <ChatList></ChatList>
                     </MDBTabs>

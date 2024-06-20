@@ -1,26 +1,21 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
+
 Modal.setAppElement('#root');
 const App = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [factory, setFactory] = useState('');
-    const [product, setProduct] = useState('');
-    const [note, setNote] = useState('');
-    const [suggestions, setSuggestions] = useState(['писька', 'пиписька', 'ПИсюлька', 'ПисюНЬчик']);
     const [selectedFactory, setSelectFactory] = useState('')
     const [item, setItem] = useState('')
-    const [factories, setFactories] = useState([
-        { id: 'factory_id_1', name: 'Фабрика 1' },
-        { id: 'factory_id_2', name: 'Фабрика 2' },
-        { id: 'factory_id_3', name: 'Фабрика 3' },
-        // Добавьте другие фабрики по аналогии
-    ]);
+    const [factories, setFactories] = useState([]);
     const [filteredFactories, setFilteredFactories] = useState([]);
     const handleFactoryChange = (event) => {
+        console.log(factory);
         const value = event.target.value;
         setFactory(value);
         setSelectFactory('')
-        const filtered = factories.filter(f => f.name.toLowerCase().includes(value.toLowerCase()));
+        const filtered = factories.filter(f => f.factory_name.toLowerCase().includes(value.toLowerCase()));
         setFilteredFactories(filtered);
     };
 
@@ -29,13 +24,14 @@ const App = () => {
         setItem(value);
 
 
+
     };
 
-    const handleButtonClick = (name, id) => {
-        setFactory(name);
-        const filtered = factories.filter(f => f.name.toLowerCase().includes(name.toLowerCase()));
+    const selectFactoryButtonClick = (factory_name, factory_id) => {
+        setFactory(factory_name);
+        const filtered = factories.filter(f => f.factory_name.toLowerCase().includes(factory_name.toLowerCase()));
         setFilteredFactories(filtered);
-        setSelectFactory({ id, name })
+        setSelectFactory({ factory_id, factory_name })
     };
     const openModal = () => {
         setIsOpen(true);
@@ -43,9 +39,57 @@ const App = () => {
     const closeModal = () => {
         setIsOpen(false);
     };
+
+    const factoryList = () => {
+        const company_id = localStorage.getItem('cId')
+        axios.post('http://localhost:3000/api/factoryList', { company_id })
+            .then(
+                (resp) => {
+                    setFactories(resp.data)
+                    const filtered = resp.data.filter(f => f.factory_name.toLowerCase().includes(factory.toLowerCase()));
+                    setFilteredFactories(filtered);
+
+                })
+
+    }
+
+    useEffect(
+        () => {
+            if (isOpen) {
+                factoryList()
+            }
+        }, [isOpen]
+    )
+
+    const addNewFactory = () => {
+        const company_id = localStorage.getItem('cId')
+        axios.post('http://localhost:3000/api/addNewFactory', { factory_name: factory, company_id })
+            .then(
+                (resp) => {
+                    console.log(resp.data[0]);
+                    alert("фабрика добавлена")
+                    setFilteredFactories(resp.data[0]);
+                    setSelectFactory(resp.data[0])
+                })
+    }
+
+
+    const addNewItem = () => {
+        const company_id = localStorage.getItem('cId')
+        axios.post('http://localhost:3000/api/addNewItem', { ...selectedFactory, item, company_id })
+            .then(
+                (resp) => {
+                    console.log(resp.data);
+                    setSelectFactory('')
+                    setFactory('')
+                    setItem('')
+                    setIsOpen(false)
+                })
+    }
+
     return (
         <div>
-            <button onClick={openModal}>Открыть модальное окно</button>
+            <button onClick={openModal}>Создать новую пару</button>
             <Modal
                 isOpen={isOpen}
                 onRequestClose={closeModal}
@@ -59,20 +103,21 @@ const App = () => {
                         value={factory}
                         onChange={handleFactoryChange}
                     />
-                    {filteredFactories.length > 0 && !(filteredFactories.length === 1 && filteredFactories[0].id != factory) && <p>Выбрать из списка</p>}
-                    {filteredFactories.length > 0 && !(filteredFactories.length === 1 && filteredFactories[0].id != factory) && (
+                    {filteredFactories.length > 0 && !(filteredFactories[0].factory_name == factory) && (
+
                         <div>
+                            <p>Выбрать из списка:</p>
                             {filteredFactories.map(f => (
-                                <button key={f.id} onClick={() => handleButtonClick(f.name, f.id)}>
-                                    {f.name}
+                                <button key={f.factory_id} onClick={() => selectFactoryButtonClick(f.factory_name, f.factory_id)}>
+                                    {f.factory_name}
                                 </button>
                             ))}
                         </div>
                     )}
-                    {factory && !(filteredFactories.length === 1 && filteredFactories[0].id != factory) && (
+                    {factory && !(filteredFactories.length == 1 && (filteredFactories[0].factory_name == factory)) && (
                         <div>
-                            <p>Или добавить новую фабрику</p>
-                            <button onClick={() => handleButtonClick(factory)}>{factory}</button>
+                            <p>Или добавить новую фабрику:</p>
+                            <button onClick={addNewFactory}>{factory}</button>
                         </div>
                     )}
 
@@ -87,7 +132,7 @@ const App = () => {
                         <p>
                             добавить новую пару Фабрика: Изделие
                         </p>
-                        <button> добавить </button>
+                        <button onClick={addNewItem} > добавить </button>
                     </div>}
 
                 </div>

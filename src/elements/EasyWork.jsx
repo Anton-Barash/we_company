@@ -43,12 +43,10 @@ export default function EasyWork() {
 
       <MDBTabsContent>
         <MDBTabsPane open={fillActive === 'tab1'}>
-          <Serch></Serch>
+          <Serch setFillActive={setFillActive} ></Serch>
         </MDBTabsPane>
-        <MDBTabsPane open={fillActive === 'tab2'}>
-
+        <MDBTabsPane style={{height:'calc(100vh - 80px)'}} open={fillActive === 'tab2'}>
           <Chat></Chat>
-
         </MDBTabsPane>
         <MDBTabsPane open={fillActive === 'tab3'}>Tab 3 content</MDBTabsPane>
       </MDBTabsContent>
