@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import PopAddNewItem from './PopAddNewItem';
 import { myStore } from '../mobx/store';
 import { action } from "mobx";
+import { useNavigate } from 'react-router-dom';
+import { bRed, tdStyles } from '../styles.jsx';
+
+
 
 const goToChat = (dialogId, factoryName, itemName, setFillActive) => {
     const idFacNam = localStorage.getItem("idFacNam");
@@ -36,11 +40,17 @@ const goToChat = (dialogId, factoryName, itemName, setFillActive) => {
 
 
 const Serch = ({ setFillActive }) => {
+    const navigate = useNavigate()
     const [searchTerm, setSearchTerm] = useState('');
     const [searchTerm2, setSearchTerm2] = useState('');
-
-
     const [searchResults, setSearchResults] = useState([]);
+
+
+    const sort = (name) => {
+        const newArr = [...searchResults]; // Создаем копию массива searchResults
+        newArr.sort((a, b) => (a[name] > b[name]) ? 1 : -1);
+        setSearchResults(newArr);
+    }
 
 
 
@@ -51,6 +61,13 @@ const Serch = ({ setFillActive }) => {
     const handleSearchTerm2Change = (event) => {
         setSearchTerm2(event.target.value);
     };
+
+    const exit = () => {
+
+        axios.get('http://localhost:3000/api/exit')
+            .then(
+                navigate('/'))
+    }
 
     const fetchData = async (name1, name2) => {
         const company_id = localStorage.getItem('cId')
@@ -76,7 +93,9 @@ const Serch = ({ setFillActive }) => {
     };
 
     return (
-        <div>
+        <div >
+
+            <button className={bRed} onClick={exit}> выход </button>
             <input
                 type="text"
                 placeholder="Поиск..."
@@ -91,14 +110,26 @@ const Serch = ({ setFillActive }) => {
             />
             <button onClick={handleSearch}>Искать</button>
 
-            <div>
-                {searchResults.map(item => (
-                    <div key={item.dialog_id} onClick={() => goToChat(item.dialog_id, item.factory_name, item.item_name, setFillActive)}>
-                        {`${item.factory_name} ${item.item_name}`}
-                    </div>
-                ))}
-            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th onClick={() => sort('factory_name')} >Factory Name</th>
+                        <th onClick={() => sort('item_name')} >Item Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {searchResults.map(item => (
+                        <tr key={item.dialog_id} onClick={() => goToChat(item.dialog_id, item.factory_name, item.item_name, setFillActive)}>
+                            <td className={tdStyles} >{item.factory_name}</td>
+                            <td className={tdStyles}>{item.item_name}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+
+
             <PopAddNewItem></PopAddNewItem>
+
         </div>
     );
 };

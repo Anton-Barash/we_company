@@ -5,7 +5,7 @@ import { useState } from 'react';
 import PopSelectCompany from './PopSelectCompany';
 import React from 'react';
 
-
+axios.defaults.withCredentials = true;
 
 function Log() {
 
@@ -17,7 +17,7 @@ function Log() {
     // Функция для отправки запроса на сервер
     const loginUser = async (username, password) => {
         try {
-            const response = await axios.post('http://localhost:3000/api/login', {
+            const response = await axios.post('http://localhost:3000/login', {
                 username,
                 password
             });
@@ -26,15 +26,28 @@ function Log() {
                 console.log('Список компаний для пользователя:', response.data);
                 setCompanyList(response.data)
                 setModalIsOpen(true)
-            } else {
+            }
+
+
+            else {
                 console.error('Ошибка:', response.statusText);
             }
         } catch (error) {
+            if (error.response.status === 401) {
+                console.log('нет юзера');
+            }
             console.error('Произошла ошибка:', error.message);
         }
     };
 
 
+    const a = () => {
+
+        axios.get('http://localhost:3000/api/profile').then(
+            (res) => { console.log(res); }
+        )
+
+    }
 
     return (
         <>
@@ -43,6 +56,7 @@ function Log() {
                 <Username value={username} onChange={(value) => setUsername(value.target.value)}></Username>
                 <Password value={password} onChange={(value) => setPassword(value.target.value)}></Password>
                 <Submit visible={username && password ? true : false} onClick={() => loginUser(username, password)}>Submit </Submit>
+                <button onClick={a}> dd</button>
             </Login>
             <PopSelectCompany modalIsOpen={modalIsOpen} setModalIsOpen={setModalIsOpen} conpanyList={conpanyList} />
         </>

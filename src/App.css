@@ -1,15 +1,15 @@
 #root {
   max-width: 1280px;
-  min-width: 868px;
+  min-width: 1255px;
   max-height: 100vh;
   margin: 0 auto;
   text-align: center;
   -webkit-box-shadow: 0px 0px 8px 0px rgba(34, 60, 80, 0.2);
--moz-box-shadow: 0px 0px 8px 0px rgba(34, 60, 80, 0.2);
-box-shadow: 0px 0px 8px 0px rgba(34, 60, 80, 0.2);
-border-radius: 1rem;
-    padding-left: 0.3rem;
-    padding-right: 0.3rem;
+  -moz-box-shadow: 0px 0px 8px 0px rgba(34, 60, 80, 0.2);
+  box-shadow: 0px 0px 8px 0px rgba(34, 60, 80, 0.2);
+  border-radius: 1rem;
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
 }
 
 .logo {
@@ -18,9 +18,11 @@ border-radius: 1rem;
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -29,6 +31,7 @@ border-radius: 1rem;
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -47,3 +50,4 @@ border-radius: 1rem;
 .read-the-docs {
   color: #888;
 }
+

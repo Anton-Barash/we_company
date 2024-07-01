@@ -11,6 +11,8 @@ import {
     MDBRow,
     MDBCol
 } from 'mdb-react-ui-kit';
+import ChatListBox from './ChatListBox';
+import { tabsLink } from '../styles';
 
 const Chat = () => {
 
@@ -35,15 +37,20 @@ const Chat = () => {
         return myStore.idFacNam.map((obj) => {
             return (
 
-                <MDBTabsItem key={Object.keys(obj)[0]}>
-                    <MDBTabsLink onClick={() => handleVerticalClick(Object.keys(obj)[0])} active={verticalActive === Object.keys(obj)[0]}>
-                        <div                    >
-                            {Object.values(obj)[0].factory}{Object.values(obj)[0].name}
 
-                        </div>
-                    </MDBTabsLink>
+                <div key={Object.keys(obj)[0]}
+                    className={tabsLink(verticalActive === Object.keys(obj)[0])}
+                    onClick={() => handleVerticalClick(Object.keys(obj)[0])} >
 
-                </MDBTabsItem>
+                    <h3 style={{ marginBottom: '0px', marginRight: '5px' }}>
+                        {Object.values(obj)[0].factory}
+                    </h3>
+                    <h5 style={{ color: "darkgray", textAlign: 'end' }}>
+                        {Object.values(obj)[0].name}
+                    </h5>
+                </div>
+
+
             );
         });
     };
@@ -51,16 +58,13 @@ const Chat = () => {
     return (
         <>
             <MDBRow style={{ height: '100%', overflow: 'hidden' }}>
-                <MDBCol style={{ overflow: 'auto', height: '100%', overflowX: 'hidden', paddingBottom: "5rem" }} size='3'>
-                    <MDBTabs pills className='flex-column text-center'>
-                        <ChatList></ChatList>
-                    </MDBTabs>
+                <MDBCol style={{ overflow: 'auto', height: '100%', overflowX: 'hidden', padding: "1rem 0.5rem 5rem 1rem" }} size='3'>
+                    <ChatList></ChatList>
+
                 </MDBCol>
-                <MDBCol size='9'>
-                    <MDBTabsContent>
-                        <MDBTabsPane open={verticalActive === 'tab1'}>Home content</MDBTabsPane>
-                        <MDBTabsPane open={verticalActive === 'tab2'}>Profile content</MDBTabsPane>
-                        <MDBTabsPane open={verticalActive === 'tab3'}>Messages content</MDBTabsPane>
+                <MDBCol style={{ height: "100%" }} size='9'>
+                    <MDBTabsContent style={{ height: "100%" }}>
+                        <ChatListBox dialog_id={verticalActive} ></ChatListBox>
                     </MDBTabsContent>
                 </MDBCol>
             </MDBRow>
