@@ -1,6 +1,7 @@
 import { observable } from "mobx";
 
 
+
 // ситория чатов фабрика-имя
 let arr = [];
 
@@ -23,7 +24,11 @@ class MyStore {
 
     setIdFacNam(newIdFacNam) {
         this.idFacNam.replace(newIdFacNam);
-      }
+    }
+
+    // выбираем чат
+    verticalActive = observable.box(Object.keys(this.idFacNam[0])[0])
+
 
 }
 

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import $api from '../http';;
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 

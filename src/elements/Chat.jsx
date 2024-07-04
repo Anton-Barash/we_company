@@ -1,15 +1,11 @@
-import React, { useState } from 'react';
 import { myStore } from '../mobx/store';
 import { observer } from "mobx-react"
-
+import { action } from "mobx";
 import {
-    MDBTabs,
-    MDBTabsItem,
-    MDBTabsLink,
     MDBTabsContent,
-    MDBTabsPane,
     MDBRow,
-    MDBCol
+    MDBCol,
+    MDBTabsPane
 } from 'mdb-react-ui-kit';
 import ChatListBox from './ChatListBox';
 import { tabsLink } from '../styles';
@@ -19,29 +15,30 @@ const Chat = () => {
 
 
 
-
-    const [verticalActive, setVerticalActive] = useState(
-        Object.keys(myStore.idFacNam[0])[0]
-    );
+    const verticalActive = myStore.verticalActive
 
     const handleVerticalClick = (value) => {
-        if (value === verticalActive) {
+        console.log('click');
+        if (value === verticalActive.get()) {
+            console.log("object");
             return;
         }
+        console.log(value);
 
-        setVerticalActive(value);
+        action(() => verticalActive.set(value))()
+
+
+
+
     };
 
 
-    const ChatList = () => {
-        return myStore.idFacNam.map((obj) => {
-            return (
-
-
+    const ChatList = observer(() => {
+        return (
+            myStore.idFacNam.map((obj) => (
                 <div key={Object.keys(obj)[0]}
-                    className={tabsLink(verticalActive === Object.keys(obj)[0])}
+                    className={tabsLink(myStore.verticalActive.get() === Object.keys(obj)[0])}
                     onClick={() => handleVerticalClick(Object.keys(obj)[0])} >
-
                     <h3 style={{ marginBottom: '0px', marginRight: '5px' }}>
                         {Object.values(obj)[0].factory}
                     </h3>
@@ -49,11 +46,22 @@ const Chat = () => {
                         {Object.values(obj)[0].name}
                     </h5>
                 </div>
+            ))
+        );
+    });
 
+    const Chats = observer(() => {
+        return myStore.idFacNam.map((obj) => {
+            return (
+                <MDBTabsPane style={{ height: "100%" }} key={Object.keys(obj)[0] + "MDBTabsPane"}
+                    open={Object.keys(obj)[0] === verticalActive.get()}
+                >
+                    <ChatListBox key={Object.keys(obj)[0] + "ChatListBox"} dialog_id={Object.keys(obj)[0]} show={Object.keys(obj)[0] === verticalActive.get()}></ChatListBox>
+                </MDBTabsPane>
 
-            );
-        });
-    };
+            )
+        })
+    })
 
     return (
         <>
@@ -63,8 +71,8 @@ const Chat = () => {
 
                 </MDBCol>
                 <MDBCol style={{ height: "100%" }} size='9'>
-                    <MDBTabsContent style={{ height: "100%" }}>
-                        <ChatListBox dialog_id={verticalActive} ></ChatListBox>
+                    <MDBTabsContent id='444' style={{ height: "100%" }}>
+                        <Chats></Chats>
                     </MDBTabsContent>
                 </MDBCol>
             </MDBRow>
@@ -72,4 +80,4 @@ const Chat = () => {
     );
 }
 
-export default observer(Chat)
+export default Chat

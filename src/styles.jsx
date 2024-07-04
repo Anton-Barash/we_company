@@ -3,6 +3,7 @@
 
 import { css } from '@emotion/css'
 
+
 export const tdStyles = css`
   text-align: left;
   border-color: inherit;
@@ -33,7 +34,7 @@ flex-direction: column;
 align-items: flex-start;
   h3 {
     font-weight: ${active ? 'bold' : 'normal'};
-  };
+  }
     h5 {
     font-weight: ${active ? 'bold' : 'normal'};
   }

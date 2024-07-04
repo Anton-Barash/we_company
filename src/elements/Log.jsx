@@ -1,11 +1,12 @@
 
 import Login, { Password, Submit, Username } from '@react-login-page/page1';
-import axios from 'axios';
 import { useState } from 'react';
 import PopSelectCompany from './PopSelectCompany';
 import React from 'react';
+import $api from '../http';
 
-axios.defaults.withCredentials = true;
+
+$api.defaults.withCredentials = true;
 
 function Log() {
 
@@ -17,7 +18,7 @@ function Log() {
     // Функция для отправки запроса на сервер
     const loginUser = async (username, password) => {
         try {
-            const response = await axios.post('http://localhost:3000/login', {
+            const response = await $api.post('/login', {
                 username,
                 password
             });
@@ -43,7 +44,7 @@ function Log() {
 
     const a = () => {
 
-        axios.get('http://localhost:3000/api/profile').then(
+        $api.get('/api/profile').then(
             (res) => { console.log(res); }
         )
 

@@ -1,18 +1,23 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
+import $api from '../http';
 import { Input } from 'react-chat-elements'
 import { MessageBox } from "react-chat-elements";
+import { myStore } from '../mobx/store';
 
+
+// тут переписка и инпут для отправки сообщений
 
 ChatListBox.propTypes = {
-    dialog_id: PropTypes.number.isRequired
+    dialog_id: PropTypes.string.isRequired
 };
 
-function ChatListBox({ dialog_id }) {
+function ChatListBox({ dialog_id, show }) {
+
 
     const uId = localStorage.getItem('uId')
     const inputRef = useRef(null);
+
 
     const [chatList, setChatList] = useState([{
         position: "right",
@@ -42,8 +47,8 @@ function ChatListBox({ dialog_id }) {
     });
 
     const addMess = () => {
-        axios.post(
-            'http://localhost:3000/api/addMess', {
+        $api.post(
+            '/api/addMess', {
             dialog_id, user_id: uId, message_text
         }
         ).then(
@@ -57,7 +62,7 @@ function ChatListBox({ dialog_id }) {
     }
 
     const chatListApi = (dialog_id) => {
-        axios.post('http://localhost:3000/api/chatList', {
+        $api.post('/api/chatList', {
             dialog_id
         })
             .then(
@@ -71,8 +76,12 @@ function ChatListBox({ dialog_id }) {
 
     useEffect(
         () => {
-            chatListApi(dialog_id)
-        }, [dialog_id]
+            console.log(show);
+            if (show) {
+                console.log('chatListApi');
+                chatListApi(dialog_id)
+            }
+        }, [show]
     )
 
     return (

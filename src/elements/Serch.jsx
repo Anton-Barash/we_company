@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import $api from '../http';
 import PopAddNewItem from './PopAddNewItem';
 import { myStore } from '../mobx/store';
 import { action } from "mobx";
@@ -24,6 +24,8 @@ const goToChat = (dialogId, factoryName, itemName, setFillActive) => {
 
         action(() => {
             myStore.setIdFacNam(arr)
+            myStore.verticalActive.set(dialogId.toString())
+            
         })();
 
     }
@@ -64,7 +66,7 @@ const Serch = ({ setFillActive }) => {
 
     const exit = () => {
 
-        axios.get('http://localhost:3000/api/exit')
+        $api.get('/api/exit')
             .then(
                 navigate('/'))
     }
@@ -73,7 +75,7 @@ const Serch = ({ setFillActive }) => {
         const company_id = localStorage.getItem('cId')
         const user_id = localStorage.getItem('uId')
         try {
-            const response = await axios.post('http://localhost:3000/api/serch', {
+            const response = await $api.post('/api/serch', {
                 factory_name: name1,
                 item_name: name2,
                 user_id,
@@ -81,7 +83,6 @@ const Serch = ({ setFillActive }) => {
 
             });
 
-            console.log(response.data);
             setSearchResults(response.data);
         } catch (error) {
             console.error(error);

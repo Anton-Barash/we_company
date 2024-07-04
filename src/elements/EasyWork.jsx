@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   MDBTabs,
   MDBTabsItem,
@@ -45,7 +45,7 @@ export default function EasyWork() {
         <MDBTabsPane open={fillActive === 'tab1'}>
           <Serch setFillActive={setFillActive} ></Serch>
         </MDBTabsPane>
-        <MDBTabsPane style={{height:'calc(100vh - 80px)'}} open={fillActive === 'tab2'}>
+        <MDBTabsPane style={{ height: 'calc(100vh - 80px)' }} open={fillActive === 'tab2'}>
           <Chat></Chat>
         </MDBTabsPane>
         <MDBTabsPane open={fillActive === 'tab3'}>Tab 3 content</MDBTabsPane>
