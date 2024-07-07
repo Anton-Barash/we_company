@@ -1,5 +1,5 @@
 import $api from '../http';;
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 
 Modal.setAppElement('#root');
@@ -42,7 +42,7 @@ const App = () => {
 
     const factoryList = () => {
         const company_id = localStorage.getItem('cId')
-        axios.post('http://localhost:3000/api/factoryList', { company_id })
+        $api.post('/api/factoryList', { company_id })
             .then(
                 (resp) => {
                     setFactories(resp.data)
@@ -63,7 +63,7 @@ const App = () => {
 
     const addNewFactory = () => {
         const company_id = localStorage.getItem('cId')
-        axios.post('http://localhost:3000/api/addNewFactory', { factory_name: factory, company_id })
+        $api.post('/api/addNewFactory', { factory_name: factory, company_id })
             .then(
                 (resp) => {
                     console.log(resp.data[0]);
@@ -76,7 +76,7 @@ const App = () => {
 
     const addNewItem = () => {
         const company_id = localStorage.getItem('cId')
-        axios.post('http://localhost:3000/api/addNewItem', { ...selectedFactory, item, company_id })
+        $api.post('/api/addNewItem', { ...selectedFactory, item, company_id })
             .then(
                 (resp) => {
                     console.log(resp.data);

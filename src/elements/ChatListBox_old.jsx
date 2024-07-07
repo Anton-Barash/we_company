@@ -4,8 +4,6 @@ import $api from '../http';
 import { Input } from 'react-chat-elements'
 import { MessageBox } from "react-chat-elements";
 import { myStore } from '../mobx/store';
-import socket from '../http/socet';
-import { EmotionCalc, EmotionMessageBox } from '../styles';
 
 
 // тут переписка и инпут для отправки сообщений
@@ -36,8 +34,6 @@ function ChatListBox({ dialog_id, show }) {
     const messageBox = chatList.map(message => {
         return (
             <MessageBox
-                className={EmotionMessageBox}
-                styles={{ overflow: 'clip' }}
                 position={message.user_id == uId ? 'right' : 'left'}
                 title={`${message.first_name} ${message.last_name ? message.last_name : ''}`}
                 type='text'
@@ -71,7 +67,7 @@ function ChatListBox({ dialog_id, show }) {
             .then(
                 (resp) => {
                     console.log(resp.data);
-                    setChatList(resp.data.reverse())
+                    setChatList(resp.data)
                 }
             )
     }
@@ -87,29 +83,12 @@ function ChatListBox({ dialog_id, show }) {
         }, []
     )
 
-    useEffect(() => {
-        socket.on("addMess" + dialog_id, (newMessage) => {
-            setChatList((prevChatList) => [newMessage[0], ...prevChatList]);
-            console.log(newMessage[0]);
-        });
-
-        return () => {
-            socket.off("addMess" + dialog_id);
-        };
-    }, []);
-
-
-
     return (
 
         <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }} >
-
-            <div style={{ overflow: 'auto', height: "100%", display: 'flex', flexDirection: "column-reverse" }}>
+            <div style={{ overflow: 'auto', height: "100%" }}>
                 {messageBox}
             </div>
-
-
-
             <Input
                 placeholder="Type here..."
                 multiline={true}
@@ -124,3 +103,5 @@ function ChatListBox({ dialog_id, show }) {
 }
 
 export default ChatListBox;
+
+

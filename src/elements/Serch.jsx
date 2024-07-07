@@ -4,8 +4,8 @@ import PopAddNewItem from './PopAddNewItem';
 import { myStore } from '../mobx/store';
 import { action } from "mobx";
 import { useNavigate } from 'react-router-dom';
-import { bRed, tdStyles } from '../styles.jsx';
-
+import { EmotionCalc, EmotionSearchContainer, EmotionTabsContainer, EmotionThSticky, EmotionThStyles, tdStyles } from '../styles.jsx';
+import { MDBIcon } from 'mdb-react-ui-kit';
 
 
 const goToChat = (dialogId, factoryName, itemName, setFillActive) => {
@@ -25,7 +25,7 @@ const goToChat = (dialogId, factoryName, itemName, setFillActive) => {
         action(() => {
             myStore.setIdFacNam(arr)
             myStore.verticalActive.set(dialogId.toString())
-            
+
         })();
 
     }
@@ -94,42 +94,51 @@ const Serch = ({ setFillActive }) => {
     };
 
     return (
-        <div >
+        <div className={EmotionSearchContainer}  >
+            <div>
 
-            <button className={bRed} onClick={exit}> выход </button>
-            <input
-                type="text"
-                placeholder="Поиск..."
-                value={searchTerm}
-                onChange={handleSearchTermChange}
-            />
-            <input
-                type="text"
-                placeholder="Поиск2..."
-                value={searchTerm2}
-                onChange={handleSearchTerm2Change}
-            />
-            <button onClick={handleSearch}>Искать</button>
+                <input
+                    type="text"
+                    placeholder="Поиск..."
+                    value={searchTerm}
+                    onChange={handleSearchTermChange}
+                />
+                <input
+                    type="text"
+                    placeholder="Поиск2..."
+                    value={searchTerm2}
+                    onChange={handleSearchTerm2Change}
+                />
+                <button style={{ borderRadius: "1rem" }} onClick={handleSearch}>
+                    <MDBIcon fas icon="search" />
+                </button>
+            </div>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th onClick={() => sort('factory_name')} >Factory Name</th>
-                        <th onClick={() => sort('item_name')} >Item Name</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {searchResults.map(item => (
-                        <tr key={item.dialog_id} onClick={() => goToChat(item.dialog_id, item.factory_name, item.item_name, setFillActive)}>
-                            <td className={tdStyles} >{item.factory_name}</td>
-                            <td className={tdStyles}>{item.item_name}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <div className={EmotionCalc} >
+                <div className={EmotionTabsContainer}>
+                    <table>
+                        <thead className={EmotionThSticky} >
+                            <tr>
+                                <th className={EmotionThStyles} onClick={() => sort('factory_name')} >Factory Name</th>
+                                <th className={EmotionThStyles} onClick={() => sort('item_name')} >Item Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {searchResults.map(item => (
+                                <tr key={item.dialog_id} onClick={() => goToChat(item.dialog_id, item.factory_name, item.item_name, setFillActive)}>
+                                    <td className={tdStyles} >{item.factory_name}</td>
+                                    <td className={tdStyles}>{item.item_name}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
 
 
-            <PopAddNewItem></PopAddNewItem>
+                </div>
+
+                <PopAddNewItem></PopAddNewItem>
+            </div>
+
 
         </div>
     );

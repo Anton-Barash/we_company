@@ -1,10 +1,10 @@
 
 import Login, { Password, Submit, Username } from '@react-login-page/page1';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PopSelectCompany from './PopSelectCompany';
 import React from 'react';
 import $api from '../http';
-
+import socket from '../http/socet';
 
 $api.defaults.withCredentials = true;
 
@@ -14,6 +14,19 @@ function Log() {
     const [password, setPassword] = useState('')
     const [modalIsOpen, setModalIsOpen] = React.useState(false);
     const [conpanyList, setCompanyList] = React.useState([]);
+
+
+    useEffect(
+        () => {
+            socket.on('hello', (res) => {
+                console.log('Получено сообщение ', res, ' от сервера');
+            });
+
+            return () => {
+                socket.off('hello')
+            };
+        }, []
+    )
 
     // Функция для отправки запроса на сервер
     const loginUser = async (username, password) => {

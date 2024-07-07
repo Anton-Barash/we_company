@@ -65,7 +65,7 @@ const Chat = () => {
 
     return (
         <>
-            <MDBRow style={{ height: '100%', overflow: 'hidden' }}>
+            <div style={{ height: '100%', display: 'flex' }}>
                 <MDBCol style={{ overflow: 'auto', height: '100%', overflowX: 'hidden', padding: "1rem 0.5rem 5rem 1rem" }} size='3'>
                     <ChatList></ChatList>
 
@@ -75,7 +75,7 @@ const Chat = () => {
                         <Chats></Chats>
                     </MDBTabsContent>
                 </MDBCol>
-            </MDBRow>
+            </div>
         </>
     );
 }
