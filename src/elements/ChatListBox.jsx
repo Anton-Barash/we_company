@@ -20,21 +20,18 @@ function ChatListBox({ dialog_id, show }) {
     const inputRef = useRef(null);
 
 
-    const [chatList, setChatList] = useState([{
-        position: "right",
-        type: "text",
-        title: "Помощник",
-        text: "Напиши первое сообщение",
-    }])
+
+
+    const [chatList, setChatList] = useState([])
 
     const [message_text, setMessage_text] = useState('')
+    const [shown, setShouwn] = useState(false)
+    const [last_message_id, setLastMessageId] = useState(null);
 
 
 
-
-
-    const messageBox = chatList.map(message => {
-        return (
+    const messageBox = chatList.length > 0 ? (
+        chatList.map(message => (
             <MessageBox
                 className={EmotionMessageBox}
                 styles={{ overflow: 'clip' }}
@@ -44,10 +41,14 @@ function ChatListBox({ dialog_id, show }) {
                 text={message.message_text}
                 date={message.created_at ? new Date(message.created_at) : new Date()}
                 replyButton={true}
-                key={message.message_id}>
+                key={message.message_id}
+            >
             </MessageBox>
-        )
-    });
+        ))
+    ) : (
+        <div>привет</div>
+    );
+
 
     const addMess = () => {
         $api.post(
@@ -59,6 +60,7 @@ function ChatListBox({ dialog_id, show }) {
                 console.log(resp)
                 // inputRef.current.clear();
                 inputRef.current.value = ''
+                setMessage_text('')
 
             }
         )
@@ -66,12 +68,14 @@ function ChatListBox({ dialog_id, show }) {
 
     const chatListApi = (dialog_id) => {
         $api.post('/api/chatList', {
-            dialog_id
+            dialog_id, last_message_id
         })
             .then(
                 (resp) => {
                     console.log(resp.data);
-                    setChatList(resp.data.reverse())
+                    setLastMessageId(resp.data.reverse()[0].message_id)
+                    //  setChatList([...resp.data.reverse()])
+                    setChatList((prev) => [...prev, ...resp.data.slice().reverse()])
                 }
             )
     }
@@ -79,12 +83,14 @@ function ChatListBox({ dialog_id, show }) {
 
     useEffect(
         () => {
-            console.log(show);
-            if (show) {
-                console.log('chatListApi');
+
+            if (!shown && show) {
+                console.log('chatListApi', show, shown);
                 chatListApi(dialog_id)
+                setShouwn(true)
             }
-        }, []
+            return setShouwn(false)
+        }, [show]
     )
 
     useEffect(() => {
@@ -105,7 +111,9 @@ function ChatListBox({ dialog_id, show }) {
         <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }} >
 
             <div style={{ overflow: 'auto', height: "100%", display: 'flex', flexDirection: "column-reverse" }}>
+
                 {messageBox}
+                <button onClick={() => chatListApi(dialog_id)}> еще 5</button>
             </div>
 
 
@@ -113,7 +121,7 @@ function ChatListBox({ dialog_id, show }) {
             <Input
                 placeholder="Type here..."
                 multiline={true}
-                rightButtons={<button onClick={addMess}>setd</button>}
+                rightButtons={<button disabled={message_text == ''} onClick={addMess}>setd</button>}
                 onChange={(val) => setMessage_text(val.target.value)}
                 referance={inputRef}
             // Функция для очистки

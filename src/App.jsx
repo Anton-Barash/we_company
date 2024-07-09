@@ -9,12 +9,12 @@ function App() {
 
 
   return (
-    <>
+    <div style={{ maxWidth: "1260px", margin: "auto" }}>
       <Routes>
         <Route path='*' element={<Login />}></Route>
         <Route path='EasyWork' element={<EasyWork />}></Route>
       </Routes>
-    </>
+    </div>
   )
 }
 
