@@ -9,11 +9,9 @@ import {
 } from 'mdb-react-ui-kit';
 import ChatListBox from './ChatListBox';
 import { tabsLink } from '../styles';
+import { memo } from 'react';
 
 const Chat = () => {
-
-
-
 
     const verticalActive = myStore.verticalActive
 
@@ -26,9 +24,6 @@ const Chat = () => {
         console.log(value);
 
         action(() => verticalActive.set(value))()
-
-
-
 
     };
 
@@ -80,4 +75,4 @@ const Chat = () => {
     );
 }
 
-export default Chat
+export default memo(Chat)

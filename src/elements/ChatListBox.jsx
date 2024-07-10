@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, memo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import $api from '../http';
 import { Input } from 'react-chat-elements'
@@ -15,20 +15,15 @@ ChatListBox.propTypes = {
 };
 
 function ChatListBox({ dialog_id, show }) {
-
     const uId = localStorage.getItem('uId')
     const inputRef = useRef(null);
-
-
-
-
     const [chatList, setChatList] = useState([])
-
     const [message_text, setMessage_text] = useState('')
     const [shown, setShouwn] = useState(false)
     const [last_message_id, setLastMessageId] = useState(null);
 
-
+    console.log(dialog_id, "shou:", show, "chatList:");
+    console.log(chatList);
 
     const messageBox = chatList.length > 0 ? (
         chatList.map(message => (
@@ -74,7 +69,7 @@ function ChatListBox({ dialog_id, show }) {
                 (resp) => {
                     console.log(resp.data);
                     setLastMessageId(resp.data.reverse()[0].message_id)
-                    //  setChatList([...resp.data.reverse()])
+                    //setChatList([...resp.data.reverse()])
                     setChatList((prev) => [...prev, ...resp.data.slice().reverse()])
                 }
             )
@@ -89,7 +84,7 @@ function ChatListBox({ dialog_id, show }) {
                 chatListApi(dialog_id)
                 setShouwn(true)
             }
-            return setShouwn(false)
+            // return setShouwn(false)
         }, [show]
     )
 
@@ -104,6 +99,10 @@ function ChatListBox({ dialog_id, show }) {
         };
     }, []);
 
+
+    const handleInputChange = useCallback((val) => {
+        setMessage_text(val.target.value);
+    }, []); // Пустой массив зависимостей, чтобы useCallback создавал только одну функцию
 
 
     return (
@@ -122,7 +121,7 @@ function ChatListBox({ dialog_id, show }) {
                 placeholder="Type here..."
                 multiline={true}
                 rightButtons={<button disabled={message_text == ''} onClick={addMess}>setd</button>}
-                onChange={(val) => setMessage_text(val.target.value)}
+                onChange={handleInputChange}
                 referance={inputRef}
             // Функция для очистки
             />
@@ -131,4 +130,4 @@ function ChatListBox({ dialog_id, show }) {
     );
 }
 
-export default ChatListBox;
+export default memo(ChatListBox);
