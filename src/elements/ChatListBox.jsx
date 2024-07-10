@@ -22,8 +22,9 @@ function ChatListBox({ dialog_id, show }) {
     const [shown, setShouwn] = useState(false)
     const [last_message_id, setLastMessageId] = useState(null);
 
-    console.log(dialog_id, "shou:", show, "chatList:");
-    console.log(chatList);
+    const [isCtrlPressed, setIsCtrlPressed] = useState(false);
+    const [isEnterPressed, setIsEnterPressed] = useState(false);
+
 
     const messageBox = chatList.length > 0 ? (
         chatList.map(message => (
@@ -105,6 +106,43 @@ function ChatListBox({ dialog_id, show }) {
     }, []); // Пустой массив зависимостей, чтобы useCallback создавал только одну функцию
 
 
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Control') {
+
+            setIsCtrlPressed(true);
+        }
+        if (e.key === 'Enter') {
+            setIsEnterPressed(true);
+        }
+
+    };
+
+    useEffect(() => {
+        if (isCtrlPressed && isEnterPressed && message_text) {
+            console.log("Ctrl + Enter pressed");
+            addMess();
+        }
+    }, [isCtrlPressed, isEnterPressed]);
+
+
+    const handleKeyUp = (e) => {
+        if (e.key === 'Control') {
+
+            setIsCtrlPressed(false);
+        }
+        if (e.key === 'Enter') {
+            setIsEnterPressed(false);
+        }
+    };
+    const handleButtonClick = () => {
+        if (message_text !== '') {
+            addMess();
+        }
+    };
+
+
+
     return (
 
         <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }} >
@@ -120,10 +158,11 @@ function ChatListBox({ dialog_id, show }) {
             <Input
                 placeholder="Type here..."
                 multiline={true}
-                rightButtons={<button disabled={message_text == ''} onClick={addMess}>setd</button>}
+                rightButtons={<button disabled={message_text === ''} onClick={handleButtonClick}>{isCtrlPressed ? 'Enter to send' : 'Click or Ctrl'}</button>}
                 onChange={handleInputChange}
                 referance={inputRef}
-            // Функция для очистки
+                onKeyDown={handleKeyDown}
+                onKeyUp={handleKeyUp}
             />
 
         </div>
