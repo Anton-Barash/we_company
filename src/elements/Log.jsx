@@ -57,7 +57,9 @@ function Log() {
 
     const a = () => {
 
-        $api.get('/api/profile').then(
+        $api.post('/api/sendMail', {
+
+        }).then(
             (res) => { console.log(res); }
         )
 
@@ -70,7 +72,7 @@ function Log() {
                 <Username value={username} onChange={(value) => setUsername(value.target.value)}></Username>
                 <Password value={password} onChange={(value) => setPassword(value.target.value)}></Password>
                 <Submit visible={username && password ? true : false} onClick={() => loginUser(username, password)}>Submit </Submit>
-                <button onClick={a}> dd</button>
+                <button onClick={a}> mail</button>
             </Login>
             <PopSelectCompany modalIsOpen={modalIsOpen} setModalIsOpen={setModalIsOpen} conpanyList={conpanyList} />
         </>
