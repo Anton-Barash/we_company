@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import PopSelectCompany from './PopSelectCompany';
 import React from 'react';
 import $api from '../http';
-import socket from '../http/socet';
+import { useNavigate } from "react-router-dom";
 
 $api.defaults.withCredentials = true;
 
@@ -13,20 +13,10 @@ function Log() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [modalIsOpen, setModalIsOpen] = React.useState(false);
-    const [conpanyList, setCompanyList] = React.useState([]);
+    const [companyList, setCompanyList] = React.useState([{}]);
+    // const [logError, setLogError] = React.useState(false)
 
-
-    useEffect(
-        () => {
-            socket.on('hello', (res) => {
-                console.log('Получено сообщение ', res, ' от сервера');
-            });
-
-            return () => {
-                socket.off('hello')
-            };
-        }, []
-    )
+    const navigate = useNavigate()
 
     // Функция для отправки запроса на сервер
     const loginUser = async (username, password) => {
@@ -47,7 +37,7 @@ function Log() {
                 console.error('Ошибка:', response.statusText);
             }
         } catch (error) {
-            if (error.response.status === 401) {
+            if (error.response.status === 500) {
                 console.log('нет юзера');
             }
             console.error('Произошла ошибка:', error.message);
@@ -55,15 +45,8 @@ function Log() {
     };
 
 
-    const a = () => {
 
-        $api.post('/api/sendMail', {
 
-        }).then(
-            (res) => { console.log(res); }
-        )
-
-    }
 
     return (
         <>
@@ -72,9 +55,10 @@ function Log() {
                 <Username value={username} onChange={(value) => setUsername(value.target.value)}></Username>
                 <Password value={password} onChange={(value) => setPassword(value.target.value)}></Password>
                 <Submit visible={username && password ? true : false} onClick={() => loginUser(username, password)}>Submit </Submit>
-                <button onClick={a}> mail</button>
+
+                <p style={{ cursor: 'pointer' }} onClick={() => navigate('/Signup')}> creat accound</p>
             </Login>
-            <PopSelectCompany modalIsOpen={modalIsOpen} setModalIsOpen={setModalIsOpen} conpanyList={conpanyList} />
+            <PopSelectCompany modalIsOpen={modalIsOpen} setModalIsOpen={setModalIsOpen} companyList={companyList} />
         </>
 
 

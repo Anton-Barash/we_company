@@ -92,3 +92,55 @@ align-items: flex-start;
   }
 `;
 
+// форма регистрации
+
+export const EmotionLoginPage = css`
+    --login-line-height: 1.5;
+    line-height: var(--login-line-height);
+    background-color: #2c3338;
+    background: linear-gradient(45deg, #fc466b, #3f5efb);
+    color: #fff;
+    height: auto;
+    min-height: 100%;
+    width: 100%;
+    display: flex;
+    font-size: 16px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+`
+export const EmotionLoginPageWrapper = css`
+  --gap: 1.87rem;
+    gap: var(--gap);
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    border-radius: 1.375rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 1.375rem 1.375rem 2.175rem -0.275rem rgba(0, 0, 0, 0.2);`
+
+export const EmotionLoginPageInput = css`
+    background: transparent;
+    padding: 0.57em 1em;
+    width: -webkit-fill-available;
+    border: 0;
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5000px;
+    backdrop-filter: blur(5px);
+    box-shadow: 4px 4px 60px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    font-family: Montserrat, sans-serif;
+    font-weight: 500;
+    transition: all .2s ease-in-out;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      &:focus {
+        outline: none;
+    
+    }
+    `

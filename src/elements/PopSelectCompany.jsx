@@ -24,10 +24,10 @@ const customStyles = {
 
 Modal.setAppElement('#root');
 
-const PopSelectCompany = ({ modalIsOpen, setModalIsOpen, conpanyList }) => {
+const PopSelectCompany = ({ modalIsOpen, setModalIsOpen, companyList }) => {
   const navigate = useNavigate();
 
-  const companyIdTocalStorage = (id,user_id) => {
+  const companyIdTocalStorage = (id, user_id) => {
     localStorage.setItem('cId', id)
     localStorage.setItem('uId', user_id)
     setModalIsOpen(false)
@@ -44,17 +44,25 @@ const PopSelectCompany = ({ modalIsOpen, setModalIsOpen, conpanyList }) => {
         contentLabel="Пример модального окна"
       >
         <h2>Мои компании</h2>
-        <p>Выбрать компанию:</p>
+
         <div>
 
-          {conpanyList.length && conpanyList.map(
-            (a) => {
-              return (
-                <button onClick={() => companyIdTocalStorage(a.company_id, a.user_id)} > {a.company_name} </button>
-              )
-            })}
+          {companyList.length > 0 &&
 
-          <p> <button>создать</button> </p>
+            companyList[0].company_id ?
+
+            (companyList.map((a) => (
+              <div key={a.company_id}>
+
+                <button onClick={() => companyIdTocalStorage(a.company_id, a.user_id)}>{a.company_name}</button>
+              </div>))) :
+            <p>-- Мне нужно создать свою первую компанию или присоединиться к существующей.</p>
+
+          }
+
+
+
+          <p> <button onClick={() => navigate('/CreatNewCompany')}>создать</button> </p>
         </div>
         {/* <button onClick={() => setModalIsOpen(false)}>Закрыть</button> */}
       </Modal>
