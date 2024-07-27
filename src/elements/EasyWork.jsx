@@ -8,6 +8,7 @@ import {
 } from 'mdb-react-ui-kit';
 import Serch from './Serch';
 import Chat from './Chat';
+import FileUpload from './FileUpload';
 
 export default function EasyWork() {
   const [fillActive, setFillActive] = useState('tab1');
@@ -48,7 +49,11 @@ export default function EasyWork() {
         <MDBTabsPane style={{ height: 'calc(100vh - 80px)' }} open={fillActive === 'tab2'}>
           <Chat ></Chat>
         </MDBTabsPane>
-        <MDBTabsPane style={{ height: 'calc(100vh - 80px)' }} open={fillActive === 'tab3'}>Tab 3 content</MDBTabsPane>
+        <MDBTabsPane style={{ height: 'calc(100vh - 80px)' }} open={fillActive === 'tab3'}>
+
+          <FileUpload></FileUpload>
+
+        </MDBTabsPane>
       </MDBTabsContent>
     </>
   );
