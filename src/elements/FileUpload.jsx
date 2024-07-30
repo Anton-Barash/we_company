@@ -1,28 +1,24 @@
-import React from 'react';
 import $api from '../http';
 
 const FileUpload = () => {
-  const [selectedFile, setSelectedFile] = React.useState(null);
-
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
+    const file = event.target.files[0]; // Получаем выбранный файл
+    if (!file) return; // Проверяем, что файл выбран
 
-  const handleUpload = () => {
-    console.log(selectedFile);
     const formData = new FormData();
-    formData.append('file', selectedFile);
+    formData.append('file', file); // Добавляем файл в FormData
 
-    $api.put('/fileUpload', formData, {
+    $api.post('/fileUpload', formData, {
       headers: {
-        "Content-Type": "multipart/form-data"
-      }
-
+        'Content-Type': 'multipart/form-data',
+      },
     })
-      .then((response) => {
+      .then(response => {
+        // Обработка успешного ответа от сервера
         console.log('File uploaded successfully:', response.data);
       })
-      .catch((error) => {
+      .catch(error => {
+        // Обработка ошибки
         console.error('Error uploading file:', error);
       });
   };
@@ -30,7 +26,6 @@ const FileUpload = () => {
   return (
     <div>
       <input type="file" onChange={handleFileChange} />
-      <button onClick={handleUpload}>Upload</button>
     </div>
   );
 };

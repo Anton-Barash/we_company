@@ -4,6 +4,7 @@ import axios from "axios";
 // export const API_URL = 'http://47.243.251.74:5000'
 
 export const API_URL = 'http://localhost:3000'
+export const API_URL_io = 'http://127.0.0.1:3000'
 
 
 const $api = axios.create({
@@ -20,7 +21,7 @@ $api.interceptors.response.use(
     (error) => {
         if (error.response.status === 401) {
             // Перенаправляем на страницу логина
-            window.location.href = '/login';
+            // window.location.href = '/login';
         }
         return Promise.reject(error);
     }
