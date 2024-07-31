@@ -144,3 +144,9 @@ export const EmotionLoginPageInput = css`
     
     }
     `
+
+export const EmotionInutMess = css`
+    border-radius: 1rem;
+    border: solid;
+    color: aqua;
+    `

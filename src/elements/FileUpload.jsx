@@ -1,3 +1,5 @@
+
+import { MDBIcon } from 'mdb-react-ui-kit';
 import $api from '../http';
 
 const FileUpload = () => {
@@ -25,7 +27,15 @@ const FileUpload = () => {
 
   return (
     <div>
-      <input type="file" onChange={handleFileChange} />
+      <label htmlFor="file-upload" style={{ cursor: 'pointer' }}>
+        <MDBIcon size='2x' fas icon="paperclip" />
+      </label>
+      <input
+        type="file"
+        id="file-upload"
+        style={{ display: 'none' }}
+        onChange={handleFileChange}
+      />
     </div>
   );
 };

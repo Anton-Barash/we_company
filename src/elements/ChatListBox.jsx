@@ -5,8 +5,11 @@ import { Input } from 'react-chat-elements'
 import { MessageBox } from "react-chat-elements";
 import { myStore } from '../mobx/store';
 import socket from '../http/socet';
-import { EmotionCalc, EmotionMessageBox } from '../styles';
-
+import { EmotionInutMess, EmotionMessageBox } from '../styles';
+import {
+    MDBIcon
+} from 'mdb-react-ui-kit';
+import FileUpload from './FileUpload';
 
 // тут переписка и инпут для отправки сообщений
 
@@ -156,9 +159,19 @@ function ChatListBox({ dialog_id, show }) {
 
 
             <Input
+                className={EmotionInutMess}
                 placeholder="Type here..."
                 multiline={true}
-                rightButtons={<button disabled={message_text === ''} onClick={handleButtonClick}>{isCtrlPressed ? 'Enter to send' : 'Click or Ctrl'}</button>}
+                rightButtons={
+                    <div style={{ height: "100%", display: 'flex', flexDirection: '' }}>
+                        {message_text ?
+                            <button disabled={message_text === ''} onClick={handleButtonClick}>{isCtrlPressed ? 'Enter to send' : 'Click or Ctrl'}
+                            </button> : <FileUpload></FileUpload>
+
+                        }
+
+                    </div>
+                }
                 onChange={handleInputChange}
                 referance={inputRef}
                 onKeyDown={handleKeyDown}
