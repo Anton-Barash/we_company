@@ -1,32 +1,24 @@
 import { useEffect, useState, useRef, memo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import $api from '../http';
-import { Input } from 'react-chat-elements'
 import { MessageBox } from "react-chat-elements";
 import { myStore } from '../mobx/store';
 import socket from '../http/socet';
-import { EmotionInutMess, EmotionMessageBox } from '../styles';
-import {
-    MDBIcon
-} from 'mdb-react-ui-kit';
-import FileUpload from './FileUpload';
+import { EmotionMessageBox } from '../styles';
+import ChatInput from './ChatInput';
+
 
 // тут переписка и инпут для отправки сообщений
 
-ChatListBox.propTypes = {
-    dialog_id: PropTypes.string.isRequired
-};
 
 function ChatListBox({ dialog_id, show }) {
     const uId = localStorage.getItem('uId')
-    const inputRef = useRef(null);
+
     const [chatList, setChatList] = useState([])
-    const [message_text, setMessage_text] = useState('')
+
     const [shown, setShouwn] = useState(false)
     const [last_message_id, setLastMessageId] = useState(null);
 
-    const [isCtrlPressed, setIsCtrlPressed] = useState(false);
-    const [isEnterPressed, setIsEnterPressed] = useState(false);
 
 
     const messageBox = chatList.length > 0 ? (
@@ -49,21 +41,7 @@ function ChatListBox({ dialog_id, show }) {
     );
 
 
-    const addMess = () => {
-        $api.post(
-            '/api/addMess', {
-            dialog_id, user_id: uId, message_text
-        }
-        ).then(
-            (resp) => {
-                console.log(resp)
-                // inputRef.current.clear();
-                inputRef.current.value = ''
-                setMessage_text('')
 
-            }
-        )
-    }
 
     const chatListApi = (dialog_id) => {
         $api.post('/api/chatList', {
@@ -104,45 +82,7 @@ function ChatListBox({ dialog_id, show }) {
     }, []);
 
 
-    const handleInputChange = useCallback((val) => {
-        setMessage_text(val.target.value);
-    }, []); // Пустой массив зависимостей, чтобы useCallback создавал только одну функцию
 
-
-
-    const handleKeyDown = (e) => {
-        if (e.key === 'Control') {
-
-            setIsCtrlPressed(true);
-        }
-        if (e.key === 'Enter') {
-            setIsEnterPressed(true);
-        }
-
-    };
-
-    useEffect(() => {
-        if (isCtrlPressed && isEnterPressed && message_text) {
-            console.log("Ctrl + Enter pressed");
-            addMess();
-        }
-    }, [isCtrlPressed, isEnterPressed]);
-
-
-    const handleKeyUp = (e) => {
-        if (e.key === 'Control') {
-
-            setIsCtrlPressed(false);
-        }
-        if (e.key === 'Enter') {
-            setIsEnterPressed(false);
-        }
-    };
-    const handleButtonClick = () => {
-        if (message_text !== '') {
-            addMess();
-        }
-    };
 
 
 
@@ -158,28 +98,16 @@ function ChatListBox({ dialog_id, show }) {
 
 
 
-            <Input
-                className={EmotionInutMess}
-                placeholder="Type here..."
-                multiline={true}
-                rightButtons={
-                    <div style={{ height: "100%", display: 'flex', flexDirection: '' }}>
-                        {message_text ?
-                            <button disabled={message_text === ''} onClick={handleButtonClick}>{isCtrlPressed ? 'Enter to send' : 'Click or Ctrl'}
-                            </button> : <FileUpload></FileUpload>
-
-                        }
-
-                    </div>
-                }
-                onChange={handleInputChange}
-                referance={inputRef}
-                onKeyDown={handleKeyDown}
-                onKeyUp={handleKeyUp}
-            />
+            <ChatInput dialog_id={dialog_id} uId={uId}  ></ChatInput>
 
         </div>
     );
 }
+
+ChatListBox.propTypes = {
+    dialog_id: PropTypes.string.isRequired,
+    show: PropTypes.bool.isRequired
+};
+
 
 export default memo(ChatListBox);

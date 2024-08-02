@@ -150,3 +150,12 @@ export const EmotionInutMess = css`
     border: solid;
     color: aqua;
     `
+
+export const EmotionChatInput = css`
+    padding: 10px 5px;
+    resize: none;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box;
+    flex: 1;
+`
