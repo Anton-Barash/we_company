@@ -146,16 +146,20 @@ export const EmotionLoginPageInput = css`
     `
 
 export const EmotionInutMess = css`
+    display: flex;
     border-radius: 1rem;
     border: solid;
     color: aqua;
+    align-items: flex-end;
     `
 
 export const EmotionChatInput = css`
+    outline: none;
+    border-radius: 1rem;
     padding: 10px 5px;
     resize: none;
     border: none;
-    border-radius: 5px;
     box-sizing: border-box;
     flex: 1;
+  
 `

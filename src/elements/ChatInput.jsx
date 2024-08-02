@@ -34,10 +34,14 @@ function ChatInput({ dialog_id, uId }) {
 
 
     useLayoutEffect(() => {
-        // Reset height - important to shrink on delete
-        inputRef.current.style.height = "inherit";
-        // Set height
-        inputRef.current.style.height = `${Math.min(inputRef.current.scrollHeight, 200)}px`;
+        
+        if (message_text) {
+            // Reset height - important to shrink on delete
+            inputRef.current.style.height = "inherit";
+            // Set height
+            inputRef.current.style.height = `${Math.min(inputRef.current.scrollHeight, 200)}px`;
+        }
+
     }, [message_text]);
 
 
@@ -89,7 +93,7 @@ function ChatInput({ dialog_id, uId }) {
                 rows={2} // Указываете количество строк, которые должны отображаться
 
             />
-            <div style={{ height: "100%", display: 'flex', flexDirection: '' }}>
+            <div >
                 {message_text ?
                     <button disabled={message_text === ''} onClick={handleButtonClick}>
                         {isCtrlPressed ? 'Enter to send' : 'Click or Ctrl'}
