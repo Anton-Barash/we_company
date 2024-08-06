@@ -1,59 +1,47 @@
 import { useEffect, useState, useRef, useCallback, useLayoutEffect } from 'react';
-import PropTypes from 'prop-types'
-import { Input } from 'react-chat-elements'
+import PropTypes from 'prop-types';
 import { EmotionChatInput, EmotionInutMess } from '../styles';
 import FileUpload from './FileUpload';
 import $api from '../http';
 
-function ChatInput({ dialog_id, uId }) {
-    const [message_text, setMessage_text] = useState('')
+function ChatInput({ dialog_id, setProgress }) { // Принимаем пропс dialog_id напрямую, без обертки в объект
+
+    const [message_text, setMessage_text] = useState('');
     const inputRef = useRef(null);
     const [isCtrlPressed, setIsCtrlPressed] = useState(false);
     const [isEnterPressed, setIsEnterPressed] = useState(false);
-
-
+    
     const addMess = () => {
         $api.post(
             '/api/addMess', {
-            dialog_id, user_id: uId, message_text
+            dialog_id: dialog_id, message_text
         }
         ).then(
-            (resp) => {
-                console.log(resp)
-                // inputRef.current.clear();
-                inputRef.current.value = ''
-                setMessage_text('')
-
+            () => {
+                inputRef.current.value = '';
+                setMessage_text('');
             }
-        )
+        );
     }
 
     const handleInputChange = useCallback((val) => {
         setMessage_text(val.target.value);
-    }, []); // Пустой массив зависимостей, чтобы useCallback создавал только одну функцию
-
+    }, []);
 
     useLayoutEffect(() => {
-        
         if (message_text) {
-            // Reset height - important to shrink on delete
             inputRef.current.style.height = "inherit";
-            // Set height
             inputRef.current.style.height = `${Math.min(inputRef.current.scrollHeight, 200)}px`;
         }
-
     }, [message_text]);
-
 
     const handleKeyDown = (e) => {
         if (e.key === 'Control') {
-
             setIsCtrlPressed(true);
         }
         if (e.key === 'Enter') {
             setIsEnterPressed(true);
         }
-
     };
 
     useEffect(() => {
@@ -61,24 +49,22 @@ function ChatInput({ dialog_id, uId }) {
             console.log("Ctrl + Enter pressed");
             addMess();
         }
-    }, [isCtrlPressed, isEnterPressed]);
-
+    }, [isCtrlPressed, isEnterPressed, message_text]);
 
     const handleKeyUp = (e) => {
         if (e.key === 'Control') {
-
             setIsCtrlPressed(false);
         }
         if (e.key === 'Enter') {
             setIsEnterPressed(false);
         }
     };
+
     const handleButtonClick = () => {
         if (message_text !== '') {
             addMess();
         }
     };
-
 
     return (
         <div className={EmotionInutMess}>
@@ -90,16 +76,16 @@ function ChatInput({ dialog_id, uId }) {
                 ref={inputRef}
                 onKeyDown={handleKeyDown}
                 onKeyUp={handleKeyUp}
-                rows={2} // Указываете количество строк, которые должны отображаться
-
+                rows={2}
             />
-            <div >
-                {message_text ?
+            <div>
+                {message_text ? (
                     <button disabled={message_text === ''} onClick={handleButtonClick}>
                         {isCtrlPressed ? 'Enter to send' : 'Click or Ctrl'}
                     </button>
-                    : <FileUpload />
-                }
+                ) : (
+                    <FileUpload dialog_id={dialog_id} setProgress={setProgress} /> // Передаем dialog_id напрямую
+                )}
             </div>
         </div>
     );
@@ -108,8 +94,6 @@ function ChatInput({ dialog_id, uId }) {
 
 ChatInput.propTypes = {
     dialog_id: PropTypes.string.isRequired,
-    uId: PropTypes.number
+};
 
-}
-
-export default ChatInput
+export default ChatInput;

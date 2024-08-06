@@ -61,7 +61,17 @@ padding: 1rem;
 `
 
 export const EmotionMessageBox = css`
-overflow-x: clip;
+  border-radius: 1rem;
+  overflow-x: clip;
+  min-width: 300px;
+  max-width: 500px;
+  border: solid;
+  margin: 0.1rem;
+  padding: 0.5rem;
+  pre {
+    white-space: pre-line;
+  }
+
 `
 
 

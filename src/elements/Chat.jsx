@@ -3,15 +3,12 @@ import { observer } from "mobx-react"
 import { action } from "mobx";
 import {
     MDBTabsContent,
-    MDBRow,
     MDBCol,
     MDBTabsPane
 } from 'mdb-react-ui-kit';
 import ChatListBox from './ChatListBox';
 import { tabsLink } from '../styles';
-import { memo } from 'react';
-
-const Chat = () => {
+const Chat = observer(() => {
 
     const verticalActive = myStore.verticalActive
 
@@ -22,11 +19,8 @@ const Chat = () => {
             return;
         }
         console.log(value);
-
         action(() => verticalActive.set(value))()
-
     };
-
 
     const ChatList = observer(() => {
         return (
@@ -51,7 +45,8 @@ const Chat = () => {
                 <MDBTabsPane style={{ height: "100%" }} key={Object.keys(obj)[0] + "MDBTabsPane"}
                     open={Object.keys(obj)[0] === verticalActive.get()}
                 >
-                    <ChatListBox key={Object.keys(obj)[0] + "ChatListBox"} dialog_id={Object.keys(obj)[0]} show={Object.keys(obj)[0] === verticalActive.get()}></ChatListBox>
+                    <ChatListBox key={Object.keys(obj)[0] + "ChatListBox"}
+                        dialog_id={Object.keys(obj)[0]} show={Object.keys(obj)[0] === verticalActive.get()}></ChatListBox>
                 </MDBTabsPane>
 
             )
@@ -73,6 +68,6 @@ const Chat = () => {
             </div>
         </>
     );
-}
+})
 
-export default memo(Chat)
+export default Chat

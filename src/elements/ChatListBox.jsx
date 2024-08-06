@@ -1,31 +1,36 @@
-import { useEffect, useState, useRef, memo, useCallback } from 'react';
+import { useEffect, useState, memo, useRef } from 'react';
 import PropTypes from 'prop-types';
 import $api from '../http';
-import { MessageBox } from "react-chat-elements";
-import { myStore } from '../mobx/store';
+
 import socket from '../http/socet';
 import { EmotionMessageBox } from '../styles';
 import ChatInput from './ChatInput';
+import MessageBox from './MessageBox';
+
+
+const DownloadFiles = ({ progress }) => {
+
+
+    return (
+        <div>
+            {progress}
+        </div>
+    )
+}
 
 
 // тут переписка и инпут для отправки сообщений
-
-
 function ChatListBox({ dialog_id, show }) {
+    const [progress, setProgress] = useState(0)
     const uId = localStorage.getItem('uId')
-
     const [chatList, setChatList] = useState([])
-
-    const [shown, setShouwn] = useState(false)
     const [last_message_id, setLastMessageId] = useState(null);
-
-
 
     const messageBox = chatList.length > 0 ? (
         chatList.map(message => (
             <MessageBox
                 className={EmotionMessageBox}
-                styles={{ overflow: 'clip' }}
+                // styles={{ overflow: 'clip' }}
                 position={message.user_id == uId ? 'right' : 'left'}
                 title={`${message.first_name} ${message.last_name ? message.last_name : ''}`}
                 type='text'
@@ -39,9 +44,6 @@ function ChatListBox({ dialog_id, show }) {
     ) : (
         <div>привет</div>
     );
-
-
-
 
     const chatListApi = (dialog_id) => {
         $api.post('/api/chatList', {
@@ -57,48 +59,42 @@ function ChatListBox({ dialog_id, show }) {
             )
     }
 
-
     useEffect(
         () => {
-
-            if (!shown && show) {
-                console.log('chatListApi', show, shown);
-                chatListApi(dialog_id)
-                setShouwn(true)
-            }
-            // return setShouwn(false)
-        }, [show]
+            console.log('ghjdth asdfkj k')
+        }, []
     )
 
-    useEffect(() => {
-        socket.on("addMess" + dialog_id, (newMessage) => {
-            setChatList((prevChatList) => [newMessage[0], ...prevChatList]);
-            console.log(newMessage[0]);
-        });
-
-        return () => {
-            socket.off("addMess" + dialog_id);
-        };
-    }, []);
-
-
-
-
-
+    const isCodeExecuted = useRef(false)
+    useEffect(
+        () => {
+            if (!isCodeExecuted.current && show) {
+                console.log('создаем новый сокет:addMess' + dialog_id)
+                socket.on("addMess" + dialog_id, (newMessage) => {
+                    setChatList((prevChatList) => [newMessage[0], ...prevChatList]);
+                    console.log(newMessage[0]);
+                });
+                console.log('chatListApi', show, isCodeExecuted);
+                chatListApi(dialog_id)
+                isCodeExecuted.current = true;
+            }
+            // return () => {
+            //     console.log('удляем запрос addMess', dialog_id)
+            //     socket.off("addMess" + dialog_id);
+            // };
+        }, [show])
 
     return (
 
         <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }} >
 
             <div style={{ overflow: 'auto', height: "100%", display: 'flex', flexDirection: "column-reverse" }}>
-
+                <DownloadFiles progress={progress}></DownloadFiles>
                 {messageBox}
                 <button onClick={() => chatListApi(dialog_id)}> еще 5</button>
             </div>
 
-
-
-            <ChatInput dialog_id={dialog_id} uId={uId}  ></ChatInput>
+            <ChatInput dialog_id={dialog_id} setProgress={setProgress} ></ChatInput>
 
         </div>
     );
@@ -110,4 +106,4 @@ ChatListBox.propTypes = {
 };
 
 
-export default memo(ChatListBox);
+export default ChatListBox;

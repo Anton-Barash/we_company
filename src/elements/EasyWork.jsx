@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   MDBTabs,
   MDBTabsItem,
@@ -11,15 +11,15 @@ import Chat from './Chat';
 import FileUpload from './FileUpload';
 
 export default function EasyWork() {
+  console.log('easy work');
   const [fillActive, setFillActive] = useState('tab1');
 
-  const handleFillClick = (value) => {
+  const handleFillClick = useCallback((value) => {
     if (value === fillActive) {
       return;
     }
-
     setFillActive(value);
-  };
+  }, [fillActive]);
 
   return (
     <>
@@ -44,15 +44,13 @@ export default function EasyWork() {
 
       <MDBTabsContent>
         <MDBTabsPane style={{ height: 'calc(100vh - 80px)' }} open={fillActive === 'tab1'}>
-          <Serch setFillActive={setFillActive} ></Serch>
+          <Serch setFillActive={setFillActive} />
         </MDBTabsPane>
         <MDBTabsPane style={{ height: 'calc(100vh - 80px)' }} open={fillActive === 'tab2'}>
-          <Chat ></Chat>
+          <Chat />
         </MDBTabsPane>
         <MDBTabsPane style={{ height: 'calc(100vh - 80px)' }} open={fillActive === 'tab3'}>
-
-          <FileUpload></FileUpload>
-
+       jkjkjk
         </MDBTabsPane>
       </MDBTabsContent>
     </>
