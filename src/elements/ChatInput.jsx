@@ -4,6 +4,18 @@ import { EmotionChatInput, EmotionInutMess } from '../styles';
 import FileUpload from './FileUpload';
 import $api from '../http';
 
+
+const DownloadFiles = ({ progress, files }) => {
+
+
+    return (
+        <div>
+            {progress}
+        </div>
+    )
+}
+
+
 function ChatInput({ dialog_id, setProgress }) { // Принимаем пропс dialog_id напрямую, без обертки в объект
 
     const [message_text, setMessage_text] = useState('');

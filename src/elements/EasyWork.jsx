@@ -22,7 +22,7 @@ export default function EasyWork() {
   }, [fillActive]);
 
   return (
-    <>
+    <div style={{ maxWidth: '1200px' }}>
       <MDBTabs fill className='mb-3'>
         <MDBTabsItem>
           <MDBTabsLink onClick={() => handleFillClick('tab1')} active={fillActive === 'tab1'}>
@@ -50,9 +50,9 @@ export default function EasyWork() {
           <Chat />
         </MDBTabsPane>
         <MDBTabsPane style={{ height: 'calc(100vh - 80px)' }} open={fillActive === 'tab3'}>
-       jkjkjk
+          jkjkjk
         </MDBTabsPane>
       </MDBTabsContent>
-    </>
+    </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState, memo, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import $api from '../http';
 
@@ -9,22 +9,33 @@ import MessageBox from './MessageBox';
 
 
 const DownloadFiles = ({ progress }) => {
+    const { percentCompleted, files } = progress;
 
+    if (files.length === 0) {
+        return null; // If files array is empty, return nothing
+    }
 
     return (
         <div>
-            {progress}
+            {files.map((file, index) => (
+                <div key={index}>
+                    {file.name}, {index === 0 ? percentCompleted : 0}%
+                </div>
+            ))}
         </div>
-    )
+    );
 }
+
 
 
 // тут переписка и инпут для отправки сообщений
 function ChatListBox({ dialog_id, show }) {
-    const [progress, setProgress] = useState(0)
+    const [progress, setProgress] = useState({ percentCompleted: 0, files: [] })
     const uId = localStorage.getItem('uId')
     const [chatList, setChatList] = useState([])
     const [last_message_id, setLastMessageId] = useState(null);
+
+
 
     const messageBox = chatList.length > 0 ? (
         chatList.map(message => (
@@ -79,8 +90,8 @@ function ChatListBox({ dialog_id, show }) {
                 isCodeExecuted.current = true;
             }
             // return () => {
-            //     console.log('удляем запрос addMess', dialog_id)
-            //     socket.off("addMess" + dialog_id);
+            // console.log('удляем запрос addMess', dialog_id)
+            // socket.off("addMess" + dialog_id);
             // };
         }, [show])
 
@@ -94,7 +105,7 @@ function ChatListBox({ dialog_id, show }) {
                 <button onClick={() => chatListApi(dialog_id)}> еще 5</button>
             </div>
 
-            <ChatInput dialog_id={dialog_id} setProgress={setProgress} ></ChatInput>
+            <ChatInput dialog_id={dialog_id} setProgress={setProgress}  ></ChatInput>
 
         </div>
     );

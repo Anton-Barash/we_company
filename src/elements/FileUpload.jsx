@@ -1,10 +1,13 @@
 import { MDBIcon } from 'mdb-react-ui-kit';
 import $api from '../http';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react'; // Добавляем useRef
 
 const FileUpload = ({ dialog_id, setProgress }) => {
   const [files, setFiles] = useState([]); // Состояние для хранения выбранных файлов
-
+  const [percentCompleted, setPercentCompleted] = useState(0)
+  const uploading = useRef(false); // Используем useRef для отслеживания статуса загрузки
+  // setProgress.files = files
+  // setProgress.percentCompleted = percentCompleted
   const handleFileChange = (event) => {
     const selectedFiles = Array.from(event.target.files); // Получаем выбранные файлы
     if (selectedFiles.length === 0) return; // Проверяем, что файлы выбраны
@@ -25,14 +28,18 @@ const FileUpload = ({ dialog_id, setProgress }) => {
       onUploadProgress: (progressEvent) => {
         const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
         console.log('Upload progress:', percentCompleted + '%');
-        setProgress(percentCompleted + '%');
+        setPercentCompleted(percentCompleted)
       },
     })
       .then((response) => {
         console.log('File uploaded successfully:', response.data);
+        setPercentCompleted(0)
+        uploading.current = false; // Сбрасываем статус загрузки в false
+        if (files.length > 0) {
+          setFiles(prevFiles => prevFiles.slice(1));
 
-        if (files.length > 1) {
-          setFiles((prevFiles) => prevFiles.slice(1)); // Удаляем первый элемент массива
+        } else {
+          uploading.current = false; // Устанавливаем статус загрузки в false
         }
       })
       .catch((error) => {
@@ -40,9 +47,19 @@ const FileUpload = ({ dialog_id, setProgress }) => {
       });
   };
 
+  useEffect(
+    () => {
+      setProgress({ files, percentCompleted })
+
+    }, [files, percentCompleted]
+  )
+
   // Обработчик для начала загрузки файлов в очереди
   useEffect(() => {
-    if (files.length > 0) {
+    console.log(files.length, !uploading.current)
+
+    if (files.length > 0 && !uploading.current) { // Проверяем, что файлы есть и нет активной загрузки
+      uploading.current = true; // Устанавливаем статус загрузки в true
       uploadFile(files[0]); // Загружаем первый файл
     }
   }, [files]);
