@@ -2,6 +2,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import { useNavigate } from "react-router-dom";
+import { EmotionPopupanimationKeyframesE } from '../styles';
 
 
 
@@ -16,6 +17,7 @@ const customStyles = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
+    animation: `${EmotionPopupanimationKeyframesE} .2s forwards`
   },
 };
 

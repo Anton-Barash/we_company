@@ -1,11 +1,10 @@
 
 
 
-import { css } from '@emotion/css'
+import { css, keyframes } from '@emotion/css'
 
 
 export const tdStyles = css`
-
 cursor: pointer;
 text-align: left;
 border-color: inherit;
@@ -173,3 +172,36 @@ export const EmotionChatInput = css`
     flex: 1;
   
 `
+
+
+
+export const EmotionPopupanimationKeyframesE = keyframes`
+  
+    0% {
+      opacity: 0;
+      transform: scale(0);
+    }
+
+    50% {
+      opacity: .5;
+      transform: scale(1.05);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  
+`;
+
+export const EmotionPopupAnimation = css`
+position: absolute;
+inset: 40px;
+border: 1px solid rgb(204, 204, 204);
+background: rgb(255, 255, 255);
+overflow: auto;
+border-radius: 4px;
+outline: none;
+padding: 20px;
+    animation: ${EmotionPopupanimationKeyframesE} .2s forwards;
+    `;

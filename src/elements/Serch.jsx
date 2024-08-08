@@ -136,7 +136,7 @@ const Serch = ({ setFillActive }) => {
 
                 </div>
 
-                <PopAddNewItem></PopAddNewItem>
+                <PopAddNewItem ></PopAddNewItem>
             </div>
 
 

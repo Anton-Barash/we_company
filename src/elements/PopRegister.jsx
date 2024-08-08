@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { useNavigate } from "react-router-dom";
-import { EmotionLoginPageInput, EmotionLoginPageWrapper } from '../styles';
+import { EmotionLoginPageInput, EmotionLoginPageWrapper, EmotionPopupanimationKeyframesE } from '../styles';
 import $api from '../http';
 
 
@@ -21,6 +21,7 @@ const customStyles = {
     maxWidth: "50%",
     minWidth: "500px",
     margin: "auto",
+    animation: `${EmotionPopupanimationKeyframesE} .2s forwards`
 
 
   },

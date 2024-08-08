@@ -1,9 +1,20 @@
-import $api from '../http';;
-import  { useState, useEffect } from 'react';
+import $api from '../http';
+import { useState, useEffect } from 'react';
 import Modal from 'react-modal';
+import { EmotionPopupanimationKeyframesE } from '../styles';
+
+
+
+
+const customStyles = {
+    content: {
+        animation: `${EmotionPopupanimationKeyframesE} .3s forwards`
+    },
+
+};
 
 Modal.setAppElement('#root');
-const App = () => {
+const PopAddNewItem = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [factory, setFactory] = useState('');
     const [selectedFactory, setSelectFactory] = useState('')
@@ -91,10 +102,12 @@ const App = () => {
         <div>
             <button onClick={openModal}>Создать новую пару</button>
             <Modal
+                // className={EmotionPopupAnimation}
+                style={customStyles}
                 isOpen={isOpen}
                 onRequestClose={closeModal}
                 contentLabel="Пример модального окна">
-                <h2>Модальное окно</h2>
+                <h2>Создать новую пару</h2>
                 <div>
                     <p>Фабрика</p>
                     <input
@@ -142,4 +155,4 @@ const App = () => {
         </div>);
 };
 
-export default App;
+export default PopAddNewItem;
