@@ -64,7 +64,7 @@ export const EmotionMessageBox = css`
   overflow-x: clip;
   min-width: 300px;
   max-width: 500px;
-  border: solid;
+  background-color: white;
   margin: 0.1rem;
   padding: 0.5rem;
   pre {
@@ -84,6 +84,7 @@ min-height: 4rem;
 
 
 export const tabsLink = (active) => css`
+margin-bottom: 5px;
 display: flex;
 padding-left: 1rem;
 font-weight: ${active ? 'bold' : 'normal'};
@@ -170,6 +171,7 @@ export const EmotionChatInput = css`
     border: none;
     box-sizing: border-box;
     flex: 1;
+    color: #4f4f4f;
   
 `
 
@@ -205,3 +207,40 @@ outline: none;
 padding: 20px;
     animation: ${EmotionPopupanimationKeyframesE} .2s forwards;
     `;
+
+export const EmotionChatTime = css`
+    align-items: center;
+    bottom: -5px;
+    color: #00000073;
+    font-size: 12px;
+    justify-content: flex-end;
+    right: -4px;
+    text-align: right;
+    user-select: none;
+    `
+
+export const EmotionChatFiles = css`
+    background-color: #e9e9e9;
+    border-radius: 5px;
+    padding: 9px;
+    cursor: pointer;
+    `
+export const EmotionChatName = css`
+ color: #54b4d3;
+font-weight: bold;
+ `
+
+export const EmotionChatBox = css`
+border-radius: 1rem;
+ background-image: url(https://smartqc.vercel.app/gif/8.gif);
+  image-rendering: pixelated;
+  background-size: 100% 100%;
+ `
+
+export const EmotionChantButtMoreMess = css`
+  border-radius: inherit;
+  backdrop-filter: blur(14px);
+  background: #ffffff7d;
+  margin: auto;
+}
+ `

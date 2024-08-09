@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import $api from '../http';
 
 import socket from '../http/socet';
-import { EmotionMessageBox } from '../styles';
+import { EmotionChantButtMoreMess, EmotionChatBox, EmotionMessageBox } from '../styles';
 import ChatInput from './ChatInput';
 import MessageBox from './MessageBox';
 
@@ -88,20 +88,16 @@ function ChatListBox({ dialog_id, show }) {
                 chatListApi(dialog_id)
                 isCodeExecuted.current = true;
             }
-            // return () => {
-            // console.log('удляем запрос addMess', dialog_id)
-            // socket.off("addMess" + dialog_id);
-            // };
         }, [show])
 
     return (
 
         <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }} >
 
-            <div style={{ overflow: 'auto', height: "100%", display: 'flex', flexDirection: "column-reverse" }}>
+            <div className={EmotionChatBox} style={{ overflow: 'auto', height: "100%", display: 'flex', flexDirection: "column-reverse" }}>
                 <DownloadFiles progress={progress}></DownloadFiles>
                 {messageBox}
-                <button onClick={() => chatListApi(dialog_id)}> еще 5</button>
+                <button className={EmotionChantButtMoreMess} onClick={() => chatListApi(dialog_id)}> еще 5</button>
             </div>
 
             <ChatInput dialog_id={dialog_id} setProgress={setProgress}  ></ChatInput>

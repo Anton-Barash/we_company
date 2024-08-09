@@ -1,4 +1,5 @@
 import React from 'react';
+import { EmotionChatFiles, EmotionChatName, EmotionChatTime } from '../styles';
 
 interface MessageBoxProps {
     className: string;
@@ -22,11 +23,10 @@ const MessageBox: React.FC<MessageBoxProps> = ({ className, position, title, typ
     return (
         <div>
             <div className={className} style={{ float: position === 'right' ? 'right' : 'left' }}>
-                <div>{title}</div>
-                <pre>{text}</pre>
-                <div>{new Intl.DateTimeFormat('ru', { dateStyle: 'short' }).format(date)}</div>
-                {replyButton && <button>Reply</button>}
-                {type === 'text' ? null : <button onClick={handleServerRequest}>Make Server Request</button>}
+                <span className={EmotionChatName}>{title}</span>
+                {type === 'text' ? <pre>{text}</pre> :
+                 <p className= {EmotionChatFiles} onClick={handleServerRequest}>{text}</p>}               
+                               <div className={EmotionChatTime}>{new Intl.DateTimeFormat('ru', { dateStyle: 'short' }).format(date)}</div>
             </div>
         </div>
     );
