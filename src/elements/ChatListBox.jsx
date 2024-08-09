@@ -41,10 +41,9 @@ function ChatListBox({ dialog_id, show }) {
         chatList.map(message => (
             <MessageBox
                 className={EmotionMessageBox}
-                // styles={{ overflow: 'clip' }}
                 position={message.user_id == uId ? 'right' : 'left'}
                 title={`${message.first_name} ${message.last_name ? message.last_name : ''}`}
-                type='text'
+                type={message.mime_type}
                 text={message.message_text}
                 date={message.created_at ? new Date(message.created_at) : new Date()}
                 replyButton={true}
