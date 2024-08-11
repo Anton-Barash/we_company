@@ -7,6 +7,33 @@ import { EmotionChantButtMoreMess, EmotionChatBox, EmotionMessageBox } from '../
 import ChatInput from './ChatInput';
 import MessageBox from './MessageBox';
 
+const downloadFile = (url, name) => {
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', name);
+    document.body.appendChild(link);
+    link.click();
+    link.parentNode.removeChild(link);
+};
+
+
+
+const handleGeneratePresignedUrlRequest = (e) => {
+    const name = e.target.innerText;
+    const key = e.target.id;
+    console.log(key);
+
+    $api.post('/api/generatePresignedUrl', { key }, {
+  
+    })
+    .then(resp => {
+        console.log(resp);
+        const fileUrl = resp.data; // Предположим, что ссылка на файл находится в свойстве 'url' объекта ответа
+        downloadFile(fileUrl, name); // Вызов функции для скачивания файла
+    });
+};
+
+
 
 const DownloadFiles = ({ progress }) => {
     const { percentCompleted, files } = progress;
@@ -40,6 +67,7 @@ function ChatListBox({ dialog_id, show }) {
     const messageBox = chatList.length > 0 ? (
         chatList.map(message => (
             <MessageBox
+                key={message.message_id}
                 className={EmotionMessageBox}
                 position={message.user_id == uId ? 'right' : 'left'}
                 title={`${message.first_name} ${message.last_name ? message.last_name : ''}`}
@@ -47,7 +75,10 @@ function ChatListBox({ dialog_id, show }) {
                 text={message.message_text}
                 date={message.created_at ? new Date(message.created_at) : new Date()}
                 replyButton={true}
-                key={message.message_id}
+                message_id={message.message_id}
+                dialog_id={message.dialog_id}
+                handleGeneratePresignedUrlRequest={handleGeneratePresignedUrlRequest}
+                isRead={message.is_read}
             >
             </MessageBox>
         ))

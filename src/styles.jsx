@@ -59,12 +59,12 @@ box-shadow: 0 0 2px 0px #9fa6b2;
 padding: 1rem;
 `
 
-export const EmotionMessageBox = css`
+export const EmotionMessageBox = (is_read) => css`
   border-radius: 1rem;
   overflow-x: clip;
   min-width: 300px;
   max-width: 500px;
-  background-color: white;
+  background-color: ${is_read ? 'white' : '#fff8e4'} ;
   margin: 0.1rem;
   padding: 0.5rem;
   pre {
@@ -83,8 +83,8 @@ min-height: 4rem;
 `
 
 
-export const tabsLink = (active) => css`
-margin-bottom: 5px;
+export const EmotionTabsLink = (active) => css`
+margin-bottom: 5px; 
 display: flex;
 padding-left: 1rem;
 font-weight: ${active ? 'bold' : 'normal'};
@@ -181,7 +181,7 @@ export const EmotionPopupanimationKeyframesE = keyframes`
   
     0% {
       opacity: 0;
-      transform: scale(0);
+      transform: scale(0.9);
     }
 
     50% {
@@ -243,4 +243,13 @@ export const EmotionChantButtMoreMess = css`
   background: #ffffff7d;
   margin: auto;
 }
+ `
+
+
+export const EmotionChatListBox = css`
+    overflow: hidden auto;
+    height: 100%;
+    padding: 1rem 0.5rem 5rem 0.4rem;
+    background: rgb(214, 224, 231);
+    border-radius: 1rem;
  `

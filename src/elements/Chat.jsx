@@ -7,7 +7,7 @@ import {
     MDBTabsPane
 } from 'mdb-react-ui-kit';
 import ChatListBox from './ChatListBox';
-import { tabsLink } from '../styles';
+import { EmotionChatListBox, EmotionTabsLink } from '../styles';
 const Chat = observer(() => {
 
     const verticalActive = myStore.verticalActive
@@ -26,14 +26,14 @@ const Chat = observer(() => {
         return (
             myStore.idFacNam.map((obj) => (
                 <div key={Object.keys(obj)[0]}
-                    className={tabsLink(myStore.verticalActive.get() === Object.keys(obj)[0])}
+                    className={EmotionTabsLink(myStore.verticalActive.get() === Object.keys(obj)[0])}
                     onClick={() => handleVerticalClick(Object.keys(obj)[0])} >
-                    <h3 style={{ marginBottom: '0px', marginRight: '5px' }}>
+                    <h5 style={{ marginBottom: '0px', marginRight: '5px' }}>
                         {Object.values(obj)[0].factory}
-                    </h3>
-                    <h5 style={{ color: "darkgray", textAlign: 'end' }}>
-                        {Object.values(obj)[0].name}
                     </h5>
+                    <div style={{ color: "darkgray", textAlign: 'end' }}>
+                        {Object.values(obj)[0].name}
+                    </div>
                 </div>
             ))
         );
@@ -56,12 +56,12 @@ const Chat = observer(() => {
     return (
         <>
             <div style={{ height: '100%', display: 'flex' }}>
-                <MDBCol style={{ overflow: 'auto', height: '100%', overflowX: 'hidden', padding: "1rem 0.5rem 5rem 1rem" }} size='3'>
+                <MDBCol className={EmotionChatListBox} size='3'>
                     <ChatList></ChatList>
 
                 </MDBCol>
-                <MDBCol style={{ height: "100%" }} size='9'>
-                    <MDBTabsContent id='444' style={{ height: "100%" }}>
+                <MDBCol size='9'>
+                    <MDBTabsContent id='444' style={{ height: "100%", paddingLeft: '2px' }}>
                         <Chats></Chats>
                     </MDBTabsContent>
                 </MDBCol>
