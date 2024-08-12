@@ -9,6 +9,7 @@ import {
 import Serch from './Serch';
 import Chat from './Chat';
 import FileUpload from './FileUpload';
+import DownloadFile from './DownloadFile';
 
 export default function EasyWork() {
   console.log('easy work');
@@ -50,7 +51,7 @@ export default function EasyWork() {
           <Chat />
         </MDBTabsPane>
         <MDBTabsPane style={{ height: 'calc(100vh - 80px)' }} open={fillActive === 'tab3'}>
-          jkjkjk
+          <DownloadFile></DownloadFile>
         </MDBTabsPane>
       </MDBTabsContent>
     </div>
