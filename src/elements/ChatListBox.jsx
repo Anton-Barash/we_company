@@ -6,6 +6,7 @@ import socket from '../http/socet';
 import { EmotionChantButtMoreMess, EmotionChatBox, EmotionMessageBox } from '../styles';
 import ChatInput from './ChatInput';
 import MessageBox from './MessageBox';
+import axios from 'axios';
 
 const downloadFile = (url, name) => {
     const link = document.createElement('a');
@@ -24,13 +25,18 @@ const handleGeneratePresignedUrlRequest = (e) => {
     console.log(key);
 
     $api.post('/api/generatePresignedUrl', { key }, {
-  
+        headers: {
+            'response-content-disposition': 'attachment; filename="filename.ext"'
+        }
     })
-    .then(resp => {
-        console.log(resp);
-        const fileUrl = resp.data; // Предположим, что ссылка на файл находится в свойстве 'url' объекта ответа
-        downloadFile(fileUrl, name); // Вызов функции для скачивания файла
-    });
+        .then(resp => {
+            console.log(resp.data);
+            const newFileName = 'rwerew.jpg'
+            const fileUrl = resp.data; // Предположим, что ссылка на файл находится в свойстве 'url' объекта ответа
+            downloadFile(fileUrl, newFileName); // Вызов функции для скачивания файла
+
+        }
+        );
 };
 
 
