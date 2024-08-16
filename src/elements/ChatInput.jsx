@@ -1,28 +1,50 @@
-import { useEffect, useState, useRef, useCallback, useLayoutEffect } from 'react';
+import { useEffect, useState, useRef, useCallback, useLayoutEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { EmotionChatInput, EmotionInutMess } from '../styles';
 import FileUpload from './FileUpload';
 import $api from '../http';
 
+const DownloadFiles = ({ progress }) => {
+    if (!progress || !progress.percentCompleted || !progress.files) {
+        return null; // Вывод null, если пропсы невалидны
+    }
 
-const DownloadFiles = ({ progress, files }) => {
+    const { percentCompleted, files } = progress;
 
+    if (files.length === 0) {
+        return null;
+    }
 
     return (
         <div>
-            {progress}
+            {files.map((file, index) => (
+                <div key={index}>
+                    {file.name}, {index === 0 ? percentCompleted : 0}%
+                </div>
+            ))}
         </div>
-    )
+    );
 }
 
+DownloadFiles.propTypes = {
+    progress: PropTypes.shape({
+        percentCompleted: PropTypes.number.isRequired,
+        files: PropTypes.arrayOf(
+            PropTypes.shape({
+                name: PropTypes.string.isRequired
+            })
+        ).isRequired
+    }).isRequired
+};
 
-function ChatInput({ dialog_id, setProgress }) { // Принимаем пропс dialog_id напрямую, без обертки в объект
-
+function ChatInput({ dialog_id }) { // Принимаем пропс dialog_id напрямую, без обертки в объект
+    // console.log('ChatInput: ' + dialog_id);
     const [message_text, setMessage_text] = useState('');
     const inputRef = useRef(null);
     const [isCtrlPressed, setIsCtrlPressed] = useState(false);
     const [isEnterPressed, setIsEnterPressed] = useState(false);
-    
+    const [progress, setProgress] = useState({ percentCompleted: 0, files: [] })
+
     const addMess = () => {
         $api.post(
             '/api/addMess', {
@@ -79,27 +101,30 @@ function ChatInput({ dialog_id, setProgress }) { // Принимаем проп�
     };
 
     return (
-        <div className={EmotionInutMess}>
-            <textarea
-                className={EmotionChatInput}
-                placeholder="Type here..."
-                value={message_text}
-                onChange={handleInputChange}
-                ref={inputRef}
-                onKeyDown={handleKeyDown}
-                onKeyUp={handleKeyUp}
-                rows={2}
-            />
-            <div>
-                {message_text ? (
-                    <button disabled={message_text === ''} onClick={handleButtonClick}>
-                        {isCtrlPressed ? 'Enter to send' : 'Click or Ctrl'}
-                    </button>
-                ) : (
-                    <FileUpload dialog_id={dialog_id} setProgress={setProgress} /> // Передаем dialog_id напрямую
-                )}
+        <div>
+            <DownloadFiles progress={progress}></DownloadFiles>
+            <div className={EmotionInutMess}>
+                <textarea
+                    className={EmotionChatInput}
+                    placeholder="Type here..."
+                    value={message_text}
+                    onChange={handleInputChange}
+                    ref={inputRef}
+                    onKeyDown={handleKeyDown}
+                    onKeyUp={handleKeyUp}
+                    rows={2}
+                />
+                <div>
+                    {message_text &&
+                        <button disabled={message_text === ''} onClick={handleButtonClick}>
+                            {isCtrlPressed ? 'Enter to send' : 'Click or Ctrl'}
+                        </button>
+                    }
+                    <FileUpload disabled={message_text === ''} setProgress={setProgress} dialog_id={dialog_id} />
+                </div>
             </div>
         </div>
+
     );
 
 }
