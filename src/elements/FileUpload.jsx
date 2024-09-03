@@ -1,13 +1,16 @@
 import { MDBIcon } from 'mdb-react-ui-kit';
 import $api from '../http';
 import { useEffect, useState, useRef } from 'react'; // Добавляем useRef
-import React from 'react';
+import PropTypes from 'prop-types';
+
+
+
+
 
 const FileUpload = ({ disabled, dialog_id, setProgress }) => {
   const [files, setFiles] = useState([]); // Состояние для хранения выбранных файлов
   const [percentCompleted, setPercentCompleted] = useState(0)
   const uploading = useRef(false); // Используем useRef для отслеживания статуса загрузки
-  // setProgress.files = files setProgress.percentCompleted = percentCompleted
   const handleFileChange = (event) => {
     const selectedFiles = Array.from(event.target.files); // Получаем выбранные файлы
     if (selectedFiles.length === 0)
@@ -56,7 +59,7 @@ const FileUpload = ({ disabled, dialog_id, setProgress }) => {
 
   // Обработчик для начала загрузки файлов в очереди
   useEffect(() => {
-    console.log(files.length, !uploading.current)
+    console.log(files, !uploading.current)
 
     if (files.length > 0 && !uploading.current) { // Проверяем, что файлы есть и нет активной загрузки
       uploading.current = true; // Устанавливаем статус загрузки в true
@@ -84,5 +87,13 @@ const FileUpload = ({ disabled, dialog_id, setProgress }) => {
 
   );
 };
+
+
+FileUpload.propTypes = {
+  disabled: PropTypes.bool,
+  dialog_id: PropTypes.number,
+  setProgress: PropTypes.func
+
+}
 
 export default FileUpload

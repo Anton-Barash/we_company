@@ -8,8 +8,11 @@ import {
 } from 'mdb-react-ui-kit';
 import Serch from './Serch';
 import Chat from './Chat';
-import FileUpload from './FileUpload';
-import DownloadFile from './DownloadFile';
+
+
+
+//  тут нужно создать сокет для этой компании.
+
 
 export default function EasyWork() {
   console.log('easy work');
@@ -51,7 +54,9 @@ export default function EasyWork() {
           <Chat />
         </MDBTabsPane>
         <MDBTabsPane style={{ height: 'calc(100vh - 80px)' }} open={fillActive === 'tab3'}>
-          <DownloadFile></DownloadFile>
+          <div>
+            ddsf
+          </div>
         </MDBTabsPane>
       </MDBTabsContent>
     </div>

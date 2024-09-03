@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useRef, memo, useCallback } from 'react';
-import PropTypes from 'prop-types';
-import $api from '../http';
 
-import socket from '../http/socet';
-import { EmotionChantButtMoreMess, EmotionChatBox, EmotionMessageBox } from '../styles';
+import PropTypes from 'prop-types';
+
+
+
+import { EmotionChatBox, } from '../styles';
 import ChatInput from './ChatInput';
-import MessageBox from './MessageBox';
+
 import MessageListBox from './MessageListBox';
 
 

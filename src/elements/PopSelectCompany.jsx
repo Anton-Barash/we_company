@@ -1,8 +1,8 @@
-
-import React from 'react';
 import Modal from 'react-modal';
 import { useNavigate } from "react-router-dom";
 import { EmotionPopupanimationKeyframesE } from '../styles';
+import { companyStore } from '../mobx/store';
+import PropTypes from 'prop-types';
 
 
 
@@ -30,8 +30,10 @@ const PopSelectCompany = ({ modalIsOpen, setModalIsOpen, companyList }) => {
   const navigate = useNavigate();
 
   const companyIdTocalStorage = (id, user_id) => {
-    localStorage.setItem('cId', id)
-    localStorage.setItem('uId', user_id)
+    // localStorage.setItem('cId', id)
+    // localStorage.setItem('uId', user_id)
+    companyStore.setCompanies(companyList)
+    companyStore.setActiveCompanyId(id)
     setModalIsOpen(false)
     navigate("/EasyWork");
   }
@@ -71,5 +73,11 @@ const PopSelectCompany = ({ modalIsOpen, setModalIsOpen, companyList }) => {
     </div>
   );
 };
+
+PopSelectCompany.propTypes = {
+  companyList: PropTypes.array,
+  modalIsOpen: PropTypes.bool,
+  setModalIsOpen: PropTypes.func,
+}
 
 export default PopSelectCompany;

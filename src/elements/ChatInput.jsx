@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback, useLayoutEffect, memo } from 'react';
+import { useEffect, useState, useRef, useCallback, useLayoutEffect } from 'react';
 import PropTypes from 'prop-types';
 import { EmotionChatInput, EmotionInutMess } from '../styles';
 import FileUpload from './FileUpload';
@@ -19,7 +19,7 @@ const DownloadFiles = ({ progress }) => {
         <div>
             {files.map((file, index) => (
                 <div key={index}>
-                    {file.name}, {index === 0 ? percentCompleted : 0}%
+                    {file.name},size:{(file.size / 1048576).toFixed(2)}Mb, {index === 0 ? percentCompleted : 0}%
                 </div>
             ))}
         </div>
@@ -31,7 +31,8 @@ DownloadFiles.propTypes = {
         percentCompleted: PropTypes.number.isRequired,
         files: PropTypes.arrayOf(
             PropTypes.shape({
-                name: PropTypes.string.isRequired
+                name: PropTypes.string.isRequired,
+                size: PropTypes.number.isRequired
             })
         ).isRequired
     }).isRequired
