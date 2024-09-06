@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect, useRef, useState } from "react"
-import socket from "../http/socet"
+import { useCallback, useEffect, useRef, useState } from "react"
+// import socket from "../http/socet"
 import $api from "../http"
 import { EmotionChantButtMoreMess, EmotionChatBox, EmotionMessageBox } from "../styles"
 import { observer } from "mobx-react-lite";
 import MessageBox from "./MessageBox";
-import messageStore from "../mobx/store";
+import { companyStore, messageStore } from "../mobx/store";
+import PropTypes from 'prop-types';
 
 
 const downloadFile = (url, name) => {
@@ -39,7 +40,7 @@ const handleGeneratePresignedUrlRequest = (e) => {
 
 function MessageListBox({ dialog_id, show }) {
     console.log('MessageListBox:', dialog_id);
-    const uId = localStorage.getItem('uId');
+    const uId = companyStore.getUid();
     // const [chatList, setChatList] = useState([]);
     const chatList = messageStore.getMessages(dialog_id).slice().reverse();
     const [lastMessageId, setLastMessageId] = useState(null);
@@ -53,20 +54,20 @@ function MessageListBox({ dialog_id, show }) {
 
                 setLastMessageId(resp.data.reverse()[0].message_id);
                 // setChatList((prev) => [...prev, ...resp.data.slice().reverse()]);
-                console.log(...resp.data);
+                console.log(resp.data);
                 messageStore.addMessage(dialog_id, resp.data)
             });
     }, [lastMessageId]);
 
     useEffect(() => {
         if (!isCodeExecuted.current && show) {
-            console.log('создаем новый сокет:addMess' + dialog_id);
-            const handleSocketMessage = (newMessage) => {
-                // setChatList((prevChatList) => [newMessage[0], ...prevChatList]);
-                messageStore.addMessage(dialog_id, newMessage)
-                console.log(newMessage[0]);
-            };
-            socket.on("addMess" + dialog_id, handleSocketMessage);
+            // console.log('создаем новый сокет:addMess' + dialog_id);
+            // const handleSocketMessage = (newMessage) => {
+            //     // setChatList((prevChatList) => [newMessage[0], ...prevChatList]);
+            //     messageStore.addMessage(dialog_id, newMessage)
+            //     console.log(newMessage[0]);
+            // };
+            // socket.on("addMess" + dialog_id, handleSocketMessage);
             chatListApi(dialog_id);
             isCodeExecuted.current = true;
 
@@ -103,6 +104,11 @@ function MessageListBox({ dialog_id, show }) {
             <button className={EmotionChantButtMoreMess} onClick={() => chatListApi(dialog_id)}> еще 5</button>
         </div>
     );
+}
+
+MessageListBox.propTypes = {
+    dialog_id: PropTypes.number,
+    show: PropTypes.bool
 }
 
 export default observer(MessageListBox);

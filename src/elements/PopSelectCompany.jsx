@@ -1,7 +1,7 @@
 import Modal from 'react-modal';
 import { useNavigate } from "react-router-dom";
 import { EmotionPopupanimationKeyframesE } from '../styles';
-import { companyStore } from '../mobx/store';
+import { companyStore, localStorageStore } from '../mobx/store';
 import PropTypes from 'prop-types';
 
 
@@ -27,13 +27,17 @@ const customStyles = {
 Modal.setAppElement('#root');
 
 const PopSelectCompany = ({ modalIsOpen, setModalIsOpen, companyList }) => {
+  console.log(companyList);
   const navigate = useNavigate();
 
   const companyIdTocalStorage = (id, user_id) => {
-    // localStorage.setItem('cId', id)
-    // localStorage.setItem('uId', user_id)
-    companyStore.setCompanies(companyList)
+    companyStore.setCompanies(companyList.companys)
     companyStore.setActiveCompanyId(id)
+    companyStore.setUid(user_id)
+    if (Object.keys(localStorageStore.idFacNam2).length === 0) {
+      localStorageStore.setIdFacNam2(0, "First", 'chat')
+
+    }
     setModalIsOpen(false)
     navigate("/EasyWork");
   }
@@ -51,21 +55,18 @@ const PopSelectCompany = ({ modalIsOpen, setModalIsOpen, companyList }) => {
 
         <div>
 
-          {companyList.length > 0 &&
+          {companyList.companys.length > 0 &&
 
-            companyList[0].company_id ?
+            companyList.companys[0].company_id ?
 
-            (companyList.map((a) => (
+            (companyList.companys.map((a) => (
               <div key={a.company_id}>
 
-                <button onClick={() => companyIdTocalStorage(a.company_id, a.user_id)}>{a.company_name}</button>
+                <button onClick={() => companyIdTocalStorage(a.company_id, companyList.user_id)}>{a.company_name}</button>
               </div>))) :
             <p>-- Мне нужно создать свою первую компанию или присоединиться к существующей.</p>
 
           }
-
-
-
           <p> <button onClick={() => navigate('/CreatNewCompany')}>создать</button> </p>
         </div>
         {/* <button onClick={() => setModalIsOpen(false)}>Закрыть</button> */}

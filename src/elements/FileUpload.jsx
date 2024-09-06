@@ -2,6 +2,7 @@ import { MDBIcon } from 'mdb-react-ui-kit';
 import $api from '../http';
 import { useEffect, useState, useRef } from 'react'; // Добавляем useRef
 import PropTypes from 'prop-types';
+import { companyStore } from '../mobx/store';
 
 
 
@@ -26,7 +27,7 @@ const FileUpload = ({ disabled, dialog_id, setProgress }) => {
     const formData = new FormData();
     formData.append('file', file); // Добавляем файл в FormData
     formData.append('dialog_id', dialog_id);
-    formData.append('company_id', localStorage.getItem('cId'));
+    formData.append('company', companyStore.getActiveCompany());
 
     $api.post('/api/fileUpload', formData, {
       headers: {

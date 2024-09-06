@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import $api from '../http';
 import PopAddNewItem from './PopAddNewItem';
-import { myStore } from '../mobx/store';
+import { companyStore, localStorageStore, myStore } from '../mobx/store';
 import { action } from "mobx";
 import { useNavigate } from 'react-router-dom';
 import { EmotionCalc, EmotionSearchContainer, EmotionTabsContainer, EmotionThSticky, EmotionThStyles, tdStyles } from '../styles.jsx';
@@ -9,34 +9,37 @@ import { MDBIcon } from 'mdb-react-ui-kit';
 
 
 const goToChat = (dialogId, factoryName, itemName, setFillActive) => {
-    const idFacNam = localStorage.getItem("idFacNam");
-    if (idFacNam) {
-        const arr = JSON.parse(idFacNam)
-        const existingIndex = arr.findIndex(item => Object.keys(item)[0] === dialogId.toString());
-        if (existingIndex !== -1) {
-            arr.splice(existingIndex, 1);
-        }
-        arr.unshift({ [dialogId]: { name: itemName, factory: factoryName } });
-        if (arr.length > 20) {
-            arr.splice(20) // Оставляет только первые 20 объектов в массиве
-        }
-        localStorage.setItem('idFacNam', JSON.stringify(arr));
 
-        action(() => {
-            myStore.setIdFacNam(arr)
-            myStore.verticalActive.set(dialogId.toString())
+    localStorageStore.setIdFacNam2(dialogId, factoryName, itemName)
 
-        })();
+    // const idFacNam = localStorage.getItem("idFacNam");
+    // if (idFacNam) {
+    //     const arr = JSON.parse(idFacNam)
+    //     const existingIndex = arr.findIndex(item => Object.keys(item)[0] === dialogId.toString());
+    //     if (existingIndex !== -1) {
+    //         arr.splice(existingIndex, 1);
+    //     }
+    //     arr.unshift({ [dialogId]: { name: itemName, factory: factoryName } });
+    //     if (arr.length > 20) {
+    //         arr.splice(20) // Оставляет только первые 20 объектов в массиве
+    //     }
+    //     localStorage.setItem('idFacNam', JSON.stringify(arr));
 
-    }
+    //     action(() => {
+    //         myStore.setIdFacNam(arr)
+    //         myStore.verticalActive.set(dialogId.toString())
 
-    else {
-        const newArr = [{ [dialogId]: { name: itemName, factory: factoryName } }]
-        localStorage.setItem('idFacNam', JSON.stringify(newArr));
-        action(() => {
-            myStore.setIdFacNam(newArr)
-        })();
-    }
+    //     })();
+
+    // }
+
+    // else {
+    //     const newArr = [{ [dialogId]: { name: itemName, factory: factoryName } }]
+    //     localStorage.setItem('idFacNam', JSON.stringify(newArr));
+    //     action(() => {
+    //         myStore.setIdFacNam(newArr)
+    //     })();
+    // }
     setFillActive('tab2')
 };
 
@@ -72,13 +75,12 @@ const Serch = ({ setFillActive }) => {
     }
 
     const fetchData = async (name1, name2) => {
-        const company_id = localStorage.getItem('cId')
-        const user_id = localStorage.getItem('uId')
+        const company_id = companyStore.activeCompanyId
+
         try {
             const response = await $api.post('/api/serch', {
                 factory_name: name1,
                 item_name: name2,
-                user_id,
                 company_id
 
             });

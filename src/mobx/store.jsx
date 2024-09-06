@@ -1,4 +1,5 @@
 import { observable, makeAutoObservable } from "mobx";
+import { json } from "react-router-dom";
 
 
 
@@ -71,12 +72,15 @@ class MessageStore {
     }
 }
 
-class CompanyStore {
-    companies = [
-        { company_name: null, company_id: null }
-    ];
 
-    activeCompanyId = null;
+
+class CompanyStore {
+
+    companies = JSON.parse(localStorage.getItem('companies'));
+
+    activeCompanyId = localStorage.getItem('activeCompanyId');
+
+    uID = JSON.parse(localStorage.getItem('uID'))
 
     constructor() {
         makeAutoObservable(this);
@@ -85,19 +89,74 @@ class CompanyStore {
     // Метод для установки нового массива компаний
     setCompanies(newCompanies) {
         this.companies = newCompanies;
+        localStorage.setItem('companies', JSON.stringify(newCompanies))
     }
 
     // задать активную компанию
     setActiveCompanyId(company_id) {
         this.activeCompanyId = company_id;
+        localStorage.setItem('activeCompanyId', company_id)
     }
     //  вернуть актувную компанию
-    get activeCompany() {
-        return this.companies.find(company => company.company_id === this.activeCompanyId);
+    getActiveCompany() {
+        return this.companies.find(company => company.company_id == this.activeCompanyId);
     }
+
+    setUid(newId) {
+        this.uID = newId
+        localStorage.setItem('uId', JSON.stringify(newId))
+    }
+
+    getUid() {
+        return this.uID
+    }
+
+
 }
 
+class LocalStorageStore {
+
+    // localStorageData = JSON.parse(localStorage.getItem("idFacNam2"));
+    // idFacNam2 = { "company": [{ "000": { name: "изделие", factory: "выберите" } }] }
+    idFacNam2 = JSON.parse(localStorage.getItem("idFacNam2")) || {};
+
+    constructor() {
+        makeAutoObservable(this);
+    }
+
+    setIdFacNam2(dialogId, factoryName, itemName) {
+
+        const companyId = companyStore.activeCompanyId
+        // Проверяем наличие ключа companyId
+        if (this.idFacNam2[companyId]) {
+            const companyArray = this.idFacNam2[companyId];
+
+            // Ищем индекс существующего объекта с таким же dialogId
+            const existingIndex = companyArray.findIndex(item => {
+                Object.keys(item) == dialogId
+            });
+
+            if (existingIndex !== -1) {
+                // Если объект найден, перемещаем его на первую позицию
+                const existingObject = companyArray.splice(existingIndex, 1)[0];
+                companyArray.unshift(existingObject);
+            } else {
+                // Если объект не найден, создаем новый объект и добавляем его на первую позицию
+                const newObject = { [dialogId]: { name: itemName, factory: factoryName } };
+                companyArray.unshift(newObject);
+            }
+        } else {
+            // Если ключ companyId отсутствует, создаем его с новым объектом
+            const newObject = { [dialogId]: { name: itemName, factory: factoryName } };
+            this.idFacNam2[companyId] = [newObject];
+        }
+
+        localStorage.setItem('idFacNam2', JSON.stringify(this.idFacNam2))
+
+    }
+}
 
 export const companyStore = new CompanyStore();
 export const messageStore = new MessageStore();
 export const myStore = new MyStore();
+export const localStorageStore = new LocalStorageStore();

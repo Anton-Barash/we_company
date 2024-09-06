@@ -13,7 +13,7 @@ function Log() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [modalIsOpen, setModalIsOpen] = React.useState(false);
-    const [companyList, setCompanyList] = React.useState([{}]);
+    const [companyList, setCompanyList] = React.useState({ companys: [] });
     // const [logError, setLogError] = React.useState(false)
 
     const navigate = useNavigate()

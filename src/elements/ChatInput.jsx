@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { EmotionChatInput, EmotionInutMess } from '../styles';
 import FileUpload from './FileUpload';
 import $api from '../http';
+import { companyStore } from '../mobx/store';
 
 const DownloadFiles = ({ progress }) => {
     if (!progress || !progress.percentCompleted || !progress.files) {
@@ -39,7 +40,6 @@ DownloadFiles.propTypes = {
 };
 
 function ChatInput({ dialog_id }) { // Принимаем пропс dialog_id напрямую, без обертки в объект
-    // console.log('ChatInput: ' + dialog_id);
     const [message_text, setMessage_text] = useState('');
     const inputRef = useRef(null);
     const [isCtrlPressed, setIsCtrlPressed] = useState(false);
@@ -49,7 +49,7 @@ function ChatInput({ dialog_id }) { // Принимаем пропс dialog_id �
     const addMess = () => {
         $api.post(
             '/api/addMess', {
-            dialog_id: dialog_id, message_text
+            dialog_id, message_text, company: companyStore.getActiveCompany()
         }
         ).then(
             () => {
@@ -81,7 +81,6 @@ function ChatInput({ dialog_id }) { // Принимаем пропс dialog_id �
 
     useEffect(() => {
         if (isCtrlPressed && isEnterPressed && message_text) {
-            console.log("Ctrl + Enter pressed");
             addMess();
         }
     }, [isCtrlPressed, isEnterPressed, message_text]);
@@ -131,7 +130,7 @@ function ChatInput({ dialog_id }) { // Принимаем пропс dialog_id �
 }
 
 ChatInput.propTypes = {
-    dialog_id: PropTypes.string.isRequired,
+    dialog_id: PropTypes.number.isRequired
 };
 
 export default ChatInput;

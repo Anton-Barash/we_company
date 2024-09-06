@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import {
   MDBTabs,
   MDBTabsItem,
@@ -8,15 +8,50 @@ import {
 } from 'mdb-react-ui-kit';
 import Serch from './Serch';
 import Chat from './Chat';
-
+import socket from "../http/socet"
+import { companyStore, messageStore } from '../mobx/store';
 
 
 //  тут нужно создать сокет для этой компании.
 
 
 export default function EasyWork() {
-  console.log('easy work');
+
+
+
+
+
   const [fillActive, setFillActive] = useState('tab1');
+
+  useEffect(() => {
+    console.log('easy work, создаем сокет для компании.');
+    const handleSocketMessage = (data) => {
+      console.log("сокет сработал");
+      // Обработка нового сообщения
+      messageStore.addMessage(data.dialog_id, data.newMessage);
+    };
+
+    // Проверка наличия компаний
+    if (companyStore.companies.length) {
+      // Устанавливаем обработчики для каждой компании
+      companyStore.companies.forEach((company) => {
+        const eventName = `${company.company_name}${company.company_id}`;
+        socket.on(eventName, handleSocketMessage);
+      });
+    }
+
+    // Функция очистки для удаления обработчиков
+    return () => {
+      console.log("закрыть сокет");
+      if (companyStore.companies.length) {
+        companyStore.companies.forEach((company) => {
+          const eventName = `${company.company_name}${company.company_id}`;
+          socket.off(eventName, handleSocketMessage);
+        });
+      }
+    };
+  }, []); // Убедитесь, что массив зависимостей правильный
+
 
   const handleFillClick = useCallback((value) => {
     if (value === fillActive) {

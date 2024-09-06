@@ -1,4 +1,4 @@
-import { myStore } from '../mobx/store';
+import { companyStore, localStorageStore, myStore } from '../mobx/store';
 import { observer } from "mobx-react"
 import { action } from "mobx";
 import {
@@ -23,8 +23,10 @@ const Chat = observer(() => {
     };
 
     const ChatList = observer(() => {
+        const cId = companyStore.activeCompanyId
+
         return (
-            myStore.idFacNam.map((obj) => (
+            localStorageStore.idFacNam2[cId].map((obj) => (
                 <div key={Object.keys(obj)[0]}
                     className={EmotionTabsLink(myStore.verticalActive.get() === Object.keys(obj)[0])}
                     onClick={() => handleVerticalClick(Object.keys(obj)[0])} >
@@ -40,11 +42,11 @@ const Chat = observer(() => {
     });
 
     const Chats = observer(() => {
-        return myStore.idFacNam.map((obj) => {
+        const cId = companyStore.activeCompanyId
+        return localStorageStore.idFacNam2[cId].map((obj) => {
             return (
                 <MDBTabsPane style={{ height: "100%" }} key={Object.keys(obj)[0] + "MDBTabsPane"}
-                    open={Object.keys(obj)[0] === verticalActive.get()}
-                >
+                    open={Object.keys(obj)[0] === verticalActive.get()}                >
                     <ChatListBox key={Object.keys(obj)[0] + "ChatListBox"}
                         dialog_id={Object.keys(obj)[0]} show={Object.keys(obj)[0] === verticalActive.get()}></ChatListBox>
                 </MDBTabsPane>
