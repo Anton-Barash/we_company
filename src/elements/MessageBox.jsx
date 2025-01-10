@@ -1,3 +1,4 @@
+import { companyStore } from '../mobx/store';
 import { EmotionChatFiles, EmotionChatName, EmotionChatTime } from '../styles';
 
 import PropTypes from 'prop-types';
@@ -7,8 +8,8 @@ import PropTypes from 'prop-types';
 const MessageBox = ({ className, position, title, type, text, date,
     message_id, dialog_id, handleGeneratePresignedUrlRequest, is_read }) => {
 
-    const company_id = localStorage.getItem('cId')
 
+    const company_id = companyStore.activeCompanyId;
     return (
         <div>
             <div className={className(is_read)} style={{ float: position === 'right' ? 'right' : 'left' }}>

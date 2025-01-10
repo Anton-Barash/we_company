@@ -3,6 +3,7 @@ import $api from '../http';
 import { useEffect, useState, useRef } from 'react'; // Добавляем useRef
 import PropTypes from 'prop-types';
 import { companyStore } from '../mobx/store';
+import { toJS } from 'mobx';
 
 
 
@@ -27,7 +28,9 @@ const FileUpload = ({ disabled, dialog_id, setProgress }) => {
     const formData = new FormData();
     formData.append('file', file); // Добавляем файл в FormData
     formData.append('dialog_id', dialog_id);
-    formData.append('company', companyStore.getActiveCompany());
+    formData.append('company', JSON.stringify(toJS(companyStore.getActiveCompany()))); // Преобразуем прокси в обычный объект и сериализуем в JSON
+    console.log(typeof toJS(companyStore.getActiveCompany()));
+    console.log(toJS(companyStore.getActiveCompany()));
 
     $api.post('/api/fileUpload', formData, {
       headers: {
