@@ -2,6 +2,8 @@ import $api from '../http';
 import { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import { EmotionPopupanimationKeyframesE } from '../styles';
+import { companyStore } from '../mobx/store';
+import { goToChat } from './functions';
 
 
 
@@ -14,7 +16,7 @@ const customStyles = {
 };
 
 Modal.setAppElement('#root');
-const PopAddNewItem = () => {
+const PopAddNewItem = ({ setFillActive }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [factory, setFactory] = useState('');
     const [selectedFactory, setSelectFactory] = useState('')
@@ -52,7 +54,7 @@ const PopAddNewItem = () => {
     };
 
     const factoryList = () => {
-        const company_id = localStorage.getItem('cId')
+        const company_id = companyStore.activeCompanyId
         $api.post('/api/factoryList', { company_id })
             .then(
                 (resp) => {
@@ -73,7 +75,7 @@ const PopAddNewItem = () => {
     )
 
     const addNewFactory = () => {
-        const company_id = localStorage.getItem('cId')
+        const company_id = companyStore.activeCompanyId
         $api.post('/api/addNewFactory', { factory_name: factory, company_id })
             .then(
                 (resp) => {
@@ -86,7 +88,8 @@ const PopAddNewItem = () => {
 
 
     const addNewItem = () => {
-        const company_id = localStorage.getItem('cId')
+        const company_id = companyStore.activeCompanyId
+        console.log({ ...selectedFactory, item, company_id });
         $api.post('/api/addNewItem', { ...selectedFactory, item, company_id })
             .then(
                 (resp) => {
@@ -94,6 +97,7 @@ const PopAddNewItem = () => {
                     setSelectFactory('')
                     setFactory('')
                     setItem('')
+                    goToChat(resp.data.dialog_id, selectedFactory.factory_name, item, setFillActive)
                     setIsOpen(false)
                 })
     }

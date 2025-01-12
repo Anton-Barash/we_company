@@ -1,47 +1,15 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import $api from '../http';
 import PopAddNewItem from './PopAddNewItem';
-import { companyStore, localStorageStore, myStore } from '../mobx/store';
-import { action } from "mobx";
+import { companyStore, localStorageStore } from '../mobx/store';
 import { useNavigate } from 'react-router-dom';
 import { EmotionCalc, EmotionSearchContainer, EmotionTabsContainer, EmotionThSticky, EmotionThStyles, tdStyles } from '../styles.jsx';
 import { MDBIcon } from 'mdb-react-ui-kit';
+import { goToChat } from './functions.jsx';
 
 
-const goToChat = (dialogId, factoryName, itemName, setFillActive) => {
 
-    localStorageStore.setIdFacNam2(dialogId, factoryName, itemName)
-
-    // const idFacNam = localStorage.getItem("idFacNam");
-    // if (idFacNam) {
-    //     const arr = JSON.parse(idFacNam)
-    //     const existingIndex = arr.findIndex(item => Object.keys(item)[0] === dialogId.toString());
-    //     if (existingIndex !== -1) {
-    //         arr.splice(existingIndex, 1);
-    //     }
-    //     arr.unshift({ [dialogId]: { name: itemName, factory: factoryName } });
-    //     if (arr.length > 20) {
-    //         arr.splice(20) // Оставляет только первые 20 объектов в массиве
-    //     }
-    //     localStorage.setItem('idFacNam', JSON.stringify(arr));
-
-    //     action(() => {
-    //         myStore.setIdFacNam(arr)
-    //         myStore.verticalActive.set(dialogId.toString())
-
-    //     })();
-
-    // }
-
-    // else {
-    //     const newArr = [{ [dialogId]: { name: itemName, factory: factoryName } }]
-    //     localStorage.setItem('idFacNam', JSON.stringify(newArr));
-    //     action(() => {
-    //         myStore.setIdFacNam(newArr)
-    //     })();
-    // }
-    setFillActive('tab2')
-};
 
 
 const Serch = ({ setFillActive }) => {
@@ -138,12 +106,16 @@ const Serch = ({ setFillActive }) => {
 
                 </div>
 
-                <PopAddNewItem ></PopAddNewItem>
+                <PopAddNewItem setFillActive={setFillActive} ></PopAddNewItem>
             </div>
 
 
         </div>
     );
 };
+Serch.propTypes = {
+    setFillActive: PropTypes.func.isRequired,
+};
 
 export default Serch;
+

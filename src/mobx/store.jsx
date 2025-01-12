@@ -29,7 +29,6 @@ class MyStore {
     // выбираем чат
     verticalActive = observable.box(Object.keys(this.idFacNam[0])[0])
 
-
 }
 
 
@@ -129,12 +128,10 @@ class LocalStorageStore {
         // Проверяем наличие ключа companyId
         if (this.idFacNam2[companyId]) {
             const companyArray = this.idFacNam2[companyId];
-
             // Ищем индекс существующего объекта с таким же dialogId
             const existingIndex = companyArray.findIndex(item => {
-                Object.keys(item) == dialogId
+                return Object.keys(item)[0] === dialogId
             });
-
             if (existingIndex !== -1) {
                 // Если объект найден, перемещаем его на первую позицию
                 const existingObject = companyArray.splice(existingIndex, 1)[0];

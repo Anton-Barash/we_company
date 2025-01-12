@@ -13,12 +13,9 @@ const Chat = observer(() => {
     const verticalActive = myStore.verticalActive
 
     const handleVerticalClick = (value) => {
-        console.log('click');
         if (value === verticalActive.get()) {
-            console.log("object");
             return;
         }
-        console.log(value);
         action(() => verticalActive.set(value))()
     };
 

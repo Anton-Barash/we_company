@@ -52,10 +52,12 @@ function MessageListBox({ dialog_id, show }) {
         })
             .then((resp) => {
 
-                setLastMessageId(resp.data.reverse()[0].message_id);
-                // setChatList((prev) => [...prev, ...resp.data.slice().reverse()]);
-                console.log(resp.data);
-                messageStore.addMessage(dialog_id, resp.data)
+                if (resp.data.length > 0) {
+                    setLastMessageId(resp.data.reverse()[0].message_id);
+                    // setChatList((prev) => [...prev, ...resp.data.slice().reverse()]);
+                    console.log(resp.data);
+                    messageStore.addMessage(dialog_id, resp.data);
+                }
             });
     }, [lastMessageId]);
 
