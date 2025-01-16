@@ -28,6 +28,7 @@ export default function EasyWork() {
     const handleSocketMessage = (data) => {
       console.log("сокет сработал");
       // Обработка нового сообщения
+      console.log(data);
       messageStore.addMessage(data.dialog_id, data.newMessage);
     };
 

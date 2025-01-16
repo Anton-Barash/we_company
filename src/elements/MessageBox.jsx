@@ -18,8 +18,6 @@ const MessageBox = ({ className, position, title, type, text, date,
                     <p id={`${company_id}/${dialog_id}/` + message_id} className={EmotionChatFiles} onClick={handleGeneratePresignedUrlRequest}>
                         {text}
                     </p></div>
-
-
                 }
                 <div className={EmotionChatTime}>{new Intl.DateTimeFormat('ru', { dateStyle: 'short' }).format(date)}</div>
             </div>

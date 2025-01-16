@@ -102,7 +102,7 @@ class CompanyStore {
 
     setUid(newId) {
         this.uID = newId
-        localStorage.setItem('uId', JSON.stringify(newId))
+        localStorage.setItem('uID', JSON.stringify(newId))
     }
 
     getUid() {
